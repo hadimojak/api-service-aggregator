@@ -10,4 +10,6 @@ export const ConfigValidationSchema = Joi.object({
   RABBITMQ_URL: Joi.string().required(),
   RABBITMQ_USER: Joi.string().required(),
   RABBITMQ_PASS: Joi.string().required(),
+  RABBITMQ_PORT: Joi.number().default(5672),
+  RABBITMQ_MGMT_PORT: Joi.number().default(15672),
 });
