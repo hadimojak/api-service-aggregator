@@ -107,3 +107,8 @@ docker compose --env-file .env.stage down
 
 docker compose --env-file .env.prod up -d
 docker compose --env-file .env.prod down
+
+## enviroment
+
+we should have three diffrent env file likes this :
+.env.dev|.env.stage|.env.prod
