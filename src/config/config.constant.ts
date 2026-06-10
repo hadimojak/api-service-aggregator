@@ -1,7 +1,6 @@
 import * as dotenv from 'dotenv';
 import * as fs from 'fs';
 import * as path from 'path';
-import * as Joi from 'joi';
 import { ConfigValidationSchema } from '../model/configuration.schema';
 
 // 1. Determine the environment
@@ -33,20 +32,20 @@ if (error) {
 export const config = {
   env,
   app: {
-    port: validatedEnv.PORT || 3000,
+    port: validatedEnv.PORT ,
   },
   redis: {
-    host: validatedEnv.HOST_REDIS || 'localhost',
-    port: validatedEnv.REDIS_PORT || 6379,
-    password: validatedEnv.REDIS_PASS || '',
+    host: validatedEnv.HOST_REDIS ,
+    port: validatedEnv.REDIS_PORT ,
+    password: validatedEnv.REDIS_PASS ,
   },
   rabbitmq: {
-    host: validatedEnv.RABBITMQ_HOST || 'localhost',
-    port: validatedEnv.RABBITMQ_PORT || 5672,
-    user: validatedEnv.RABBITMQ_USER || '',
-    password: validatedEnv.RABBITMQ_PASS || '',
-    serviceName: validatedEnv.RBT_SERVICE_NAME || 'RABBITMQ_SERVICE',
-    queueName: validatedEnv.RBT_QUEUE_NAME || 'API_JOB',
+    host: validatedEnv.RABBITMQ_HOST ,
+    port: validatedEnv.RABBITMQ_PORT ,
+    user: validatedEnv.RABBITMQ_USER ,
+    password: validatedEnv.RABBITMQ_PASS ,
+    serviceName: validatedEnv.RBT_SERVICE_NAME ,
+    queueName: validatedEnv.RBT_QUEUE_NAME ,
   },
 } as const;
 
