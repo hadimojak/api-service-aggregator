@@ -21,7 +21,10 @@ export class RabbitmqService implements OnModuleDestroy {
       await this.client.connect();
       this.logger.verbose('RabbitMQ connected');
     } catch (error) {
-      this.logger.fatal('Failed to connect to RabbitMQ', error instanceof Error ? error.stack : String(error));
+      this.logger.fatal(
+        'Failed to connect to RabbitMQ',
+        error instanceof Error ? error.stack : String(error),
+      );
       throw error;
     }
   }

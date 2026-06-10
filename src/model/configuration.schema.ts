@@ -11,7 +11,6 @@ export const ConfigValidationSchema = Joi.object({
   RABBITMQ_USER: Joi.string().required(),
   RABBITMQ_PASS: Joi.string().required(),
   RABBITMQ_PORT: Joi.number().default(5672),
-  RABBITMQ_MGMT_PORT: Joi.number().default(15672),
-  RABBITMQ_SERVICE_NAME: Joi.string().default('RABBITMQ_SERVICE'),
-  RABBITMQ_QUEUE_NAME: Joi.string().default('API_JOB'),
+  RBT_SERVICE_NAME: Joi.string().default('RABBITMQ_SERVICE'),
+  RBT_QUEUE_NAME: Joi.string().default('API_JOB'),
 });
