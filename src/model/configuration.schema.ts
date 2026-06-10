@@ -7,7 +7,7 @@ export const ConfigValidationSchema = Joi.object({
   REDIS_PORT: Joi.number().default(6379),
   REDIS_PASS: Joi.string().required(),
 
-  RABBITMQ_URL: Joi.string().required(),
+  RABBITMQ_HOST: Joi.string().required(),
   RABBITMQ_USER: Joi.string().required(),
   RABBITMQ_PASS: Joi.string().required(),
   RABBITMQ_PORT: Joi.number().default(5672),

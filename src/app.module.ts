@@ -1,11 +1,8 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { ConfigModule } from '@nestjs/config';
 import { ConfigValidationSchema } from './model/configuration.schema';
 import { RedisModule } from './redis/redis.module';
 import { RabbitmqModule } from './rabbitmq/rabbitmq.module';
-import { TasksModule } from './tasks/tasks.module';
 
 @Module({
   imports: [
@@ -16,9 +13,8 @@ import { TasksModule } from './tasks/tasks.module';
     }),
     RedisModule,
     RabbitmqModule,
-    TasksModule,
   ],
-  controllers: [AppController],
-  providers: [AppService],
+  controllers: [],
+  providers: [],
 })
 export class AppModule {}

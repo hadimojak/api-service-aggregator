@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common';
-import { TasksController } from './tasks.controller';
-import { TasksService } from './tasks.service';
+import { RabbitmqModule } from '../rabbitmq/rabbitmq.module';
 
 @Module({
-  controllers: [TasksController],
-  providers: [TasksService]
+  imports: [RabbitmqModule],
+  controllers: [],
+  providers: [],
 })
 export class TasksModule {}
