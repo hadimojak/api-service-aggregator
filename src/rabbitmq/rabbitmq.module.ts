@@ -4,7 +4,7 @@ import {
   ClientProxy,
   Transport,
 } from '@nestjs/microservices';
-import { ConfigService } from '@nestjs/config';
+import { ConfigService } from 'src/config/config.service';
 import { RabbitmqService } from './rabbitmq.service';
 
 @Module({
@@ -12,14 +12,14 @@ import { RabbitmqService } from './rabbitmq.service';
     {
       provide: 'RABBITMQ_SERVICE',
       inject: [ConfigService],
-      useFactory: (config: ConfigService): ClientProxy =>
+      useFactory: (configService: ConfigService): ClientProxy =>
         ClientProxyFactory.create({
           transport: Transport.RMQ,
           options: {
             urls: [
-              `amqp://${config.get('RABBITMQ_USER')}:${config.get('RABBITMQ_PASS')}@${config.get('RABBITMQ_HOST')}:${config.get('RABBITMQ_PORT')}`,
+              `amqp://${configService.config.rabbitmq.user}:${configService.config.rabbitmq.password}@${configService.config.rabbitmq.host}:${configService.config.rabbitmq.port}`,
             ],
-            queue: config.get<string>('RBT_QUEUE_NAME'),
+            queue: configService.config.rabbitmq.queueName,
             queueOptions: { durable: true },
             noAck: true,
           },

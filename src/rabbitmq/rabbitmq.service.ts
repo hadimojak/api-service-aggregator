@@ -1,7 +1,7 @@
 import { Injectable, Inject, OnModuleDestroy, Logger } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 import { lastValueFrom } from 'rxjs';
-import { ConfigService } from '@nestjs/config';
+import { ConfigService } from 'src/config/config.service';
 
 @Injectable()
 export class RabbitmqService implements OnModuleDestroy {
@@ -30,7 +30,7 @@ export class RabbitmqService implements OnModuleDestroy {
   }
 
   async produce(payload: unknown): Promise<void> {
-    const queueName = this.configService.get<string>('RBT_QUEUE_NAME');
+    const queueName = this.configService.config.rabbitmq.queueName;
 
     await lastValueFrom(this.client.emit(queueName, payload));
   }

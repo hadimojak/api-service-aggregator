@@ -3,8 +3,8 @@ import {
   FastifyAdapter,
   NestFastifyApplication,
 } from '@nestjs/platform-fastify';
+import { ConfigService } from './config/config.service';
 import { AppModule } from './app.module';
-import { ConfigService } from '@nestjs/config';
 import { Logger } from '@nestjs/common';
 import { RedisService } from './redis/redis.service';
 import { RabbitmqService } from './rabbitmq/rabbitmq.service';
@@ -40,7 +40,7 @@ async function bootstrap() {
   }
 
   const configService = app.get(ConfigService);
-  const port = configService.get<number>('PORT', 3000);
+  const port = configService.config.app.port;  
 
   await app.listen({ port, host: '0.0.0.0' });
 
