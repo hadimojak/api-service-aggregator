@@ -1,9 +1,9 @@
-import { Injectable, OnModuleInit, Logger } from '@nestjs/common';
+import { Injectable, OnModuleInit, Logger, OnModuleDestroy } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import Redis from 'ioredis';
 
 @Injectable()
-export class RedisService extends Redis implements OnModuleInit {
+export class RedisService extends Redis implements OnModuleDestroy {
   private readonly logger = new Logger(RedisService.name);
 
   constructor(private readonly configService: ConfigService) {
@@ -29,10 +29,6 @@ export class RedisService extends Redis implements OnModuleInit {
     this.on('close', () => {
       this.logger.verbose('Redis connection closed');
     });
-  }
-
-  async onModuleInit() {
-    await this.checkConnection();
   }
 
   async onModuleDestroy() {

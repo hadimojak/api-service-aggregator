@@ -25,11 +25,9 @@ async function bootstrap() {
 
     const redisService = app.get(RedisService);
     await redisService.checkConnection();
-    logger.verbose('Redis: Connected');
 
     const rabbitmqService = app.get(RabbitmqService);
     await rabbitmqService.checkConnection();
-    logger.verbose('RabbitMQ: Connected');
   } catch (error) {
     console.log(error);
 

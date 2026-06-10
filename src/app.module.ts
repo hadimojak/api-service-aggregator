@@ -3,6 +3,7 @@ import { ConfigModule } from '@nestjs/config';
 import { ConfigValidationSchema } from './model/configuration.schema';
 import { RedisModule } from './redis/redis.module';
 import { RabbitmqModule } from './rabbitmq/rabbitmq.module';
+import { ThirdpartyModule } from './thirdparty/thirdparty.module';
 
 @Module({
   imports: [
@@ -13,6 +14,7 @@ import { RabbitmqModule } from './rabbitmq/rabbitmq.module';
     }),
     RedisModule,
     RabbitmqModule,
+    ThirdpartyModule,
   ],
   controllers: [],
   providers: [],

@@ -9,24 +9,28 @@ import { ClientProxy } from '@nestjs/microservices';
 import { lastValueFrom } from 'rxjs';
 
 @Injectable()
-export class RabbitmqService implements OnModuleInit, OnModuleDestroy {
+export class RabbitmqService implements OnModuleDestroy {
   private readonly logger = new Logger(RabbitmqService.name);
+  private isConnected = false;
 
   constructor(
     @Inject('RABBITMQ_SERVICE') private readonly client: ClientProxy,
   ) {}
 
-  async onModuleInit() {
-    await this.checkConnection();
-  }
-
   async onModuleDestroy() {
-    await this.client.close();
+    if (this.isConnected) {
+      await this.client.close();
+    }
   }
 
   async checkConnection(): Promise<void> {
+    if (this.isConnected) {
+      return;
+    }
+
     this.logger.verbose(`Connecting to RabbitMQ queue ${'API_JOB'}...`);
     await this.client.connect();
+    this.isConnected = true;
     this.logger.verbose('RabbitMQ connected successfully');
   }
 
