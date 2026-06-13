@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { CreateThirdPartyDto } from './dto/create-thirdparty.dto';
+import { CreateThirdPartyDto } from '../../common/dto/create-thirdparty.dto';
 
 @Injectable()
 export class ThirdpartyService {

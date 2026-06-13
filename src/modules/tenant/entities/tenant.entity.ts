@@ -19,4 +19,10 @@ export class TenantEntity {
     default: true,
   })
   isActive!: boolean;
+
+  @Column()
+  createdAt: Date = new Date();
+
+  @Column()
+  updatedAt!: Date;
 }

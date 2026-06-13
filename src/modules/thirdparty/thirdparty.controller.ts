@@ -7,7 +7,7 @@ import {
   HttpStatus,
 } from '@nestjs/common';
 import { ThirdpartyService } from './thirdparty.service';
-import { CreateThirdPartyDto } from './dto/create-thirdparty.dto';
+import { CreateThirdPartyDto } from '../../common/dto/create-thirdparty.dto';
 
 @Controller('api')
 export class ThirdpartyController {

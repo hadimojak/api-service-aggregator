@@ -33,7 +33,7 @@ async function bootstrap() {
     const dataSource = app.get(DataSource);
     const options = dataSource.options as any;
     if (dataSource.isInitialized) {
-      logger.log(
+      logger.verbose(
         `PostgreSQL connected | ${options.host}:${options.port}/${options.database}`,
       );
     } else return new Error('PostgreSQL connection failed');
