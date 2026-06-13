@@ -5,8 +5,8 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { TenantEntity } from 'src/modules/provider/entities/provider.entity';
 import { Repository } from 'typeorm';
+import { TenantEntity } from 'src/modules/tenant/entities/tenant.entity';
 
 @Injectable()
 export class TenantGuard implements CanActivate {
