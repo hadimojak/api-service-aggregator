@@ -1,7 +1,14 @@
 import { Injectable, Inject, OnModuleDestroy, Logger } from '@nestjs/common';
-import { ClientProxy } from '@nestjs/microservices';
+import {
+  ClientProxy,
+  EventPattern,
+  Payload,
+  Ctx,
+  RmqContext,
+} from '@nestjs/microservices';
 import { lastValueFrom } from 'rxjs';
 import { ConfigService } from '../../../config/config.service';
+import { LogService } from '../../log/log.service';
 
 @Injectable()
 export class RabbitmqService implements OnModuleDestroy {
@@ -10,6 +17,7 @@ export class RabbitmqService implements OnModuleDestroy {
   constructor(
     @Inject(ConfigService.config.rabbitmq.serviceName)
     private readonly client: ClientProxy,
+    @Inject(LogService) private readonly logService: LogService,
   ) {}
 
   async onModuleDestroy() {
@@ -29,6 +37,20 @@ export class RabbitmqService implements OnModuleDestroy {
   }
 
   async publish<T>(queue: string, payload: T): Promise<void> {
-    await lastValueFrom(this.client.emit(queue, payload));
+    lastValueFrom(this.client.emit(queue, payload));
+  }
+
+  @EventPattern('request-log')
+  async handle(@Payload() data: any, @Ctx() ctx: RmqContext) {
+    const channel = ctx.getChannelRef();
+    const message = ctx.getMessage();
+
+    try {
+      await this.logService.createLog(data);
+
+      channel.ack(message); // ✅ success
+    } catch (e) {
+      channel.nack(message, false, true); // retry
+    }
   }
 }

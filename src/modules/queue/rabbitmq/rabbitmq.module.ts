@@ -6,6 +6,7 @@ import {
 } from '@nestjs/microservices';
 import { ConfigService } from '../../../config/config.service';
 import { RabbitmqService } from './rabbitmq.service';
+import { LogModule } from '../../log/log.module';
 
 @Module({
   providers: [
@@ -15,7 +16,6 @@ import { RabbitmqService } from './rabbitmq.service';
         ClientProxyFactory.create({
           transport: Transport.RMQ,
 
-          
           options: {
             urls: [
               `amqp://${ConfigService.config.rabbitmq.user}:${ConfigService.config.rabbitmq.password}@${ConfigService.config.rabbitmq.host}:${ConfigService.config.rabbitmq.port}`,
@@ -29,5 +29,6 @@ import { RabbitmqService } from './rabbitmq.service';
     RabbitmqService,
   ],
   exports: [RabbitmqService],
+  imports: [LogModule],
 })
 export class RabbitmqModule {}
