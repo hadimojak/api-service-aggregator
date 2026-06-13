@@ -6,8 +6,8 @@ import {
 import { ConfigService } from './config/config.service';
 import { AppModule } from './app.module';
 import { Logger } from '@nestjs/common';
-import { RedisService } from './redis/redis.service';
-import { RabbitmqService } from './rabbitmq/rabbitmq.service';
+import { RedisService } from './modules/cache/redis/redis.service';
+import { RabbitmqService } from './modules/queue/rabbitmq/rabbitmq.service';
 
 async function bootstrap() {
   const logger = new Logger('Bootstrap');
