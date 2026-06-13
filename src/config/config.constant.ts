@@ -1,7 +1,7 @@
 import * as dotenv from 'dotenv';
 import * as fs from 'fs';
 import * as path from 'path';
-import { ConfigValidationSchema } from '../model/configuration.schema';
+import { ConfigValidationSchema } from './model/configuration.schema';
 
 // 1. Determine the environment
 const env = process.env.APP_ENV || 'dev';
