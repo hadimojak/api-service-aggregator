@@ -22,4 +22,10 @@ export class TenantEntity {
 
   @Column({ default: 100 })
   rateLimitPerMin!: number;
+
+  @Column()
+  createdAt!: Date;
+
+  @Column()
+  updatedAt!: Date;
 }

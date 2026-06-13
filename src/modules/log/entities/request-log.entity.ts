@@ -26,6 +26,14 @@ export class RequestLogEntity {
   @Column()
   latency!: number;
 
+  @Column({
+    nullable: true,
+  })
+  errorMessage?: string;
+
   @Column()
   createdAt!: Date;
+
+  @Column()
+  updatedAt!: Date;
 }

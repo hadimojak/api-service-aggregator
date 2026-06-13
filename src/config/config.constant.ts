@@ -2,7 +2,6 @@ import * as dotenv from 'dotenv';
 import * as fs from 'fs';
 import * as path from 'path';
 import { ConfigValidationSchema } from './model/configuration.schema';
-import { envValidationInterface } from './model/env.validation.interface';
 
 // 1. Determine the environment
 const env = process.env.APP_ENV || 'dev';
@@ -46,7 +45,8 @@ export const config = {
     user: validatedEnv.RABBITMQ_USER,
     password: validatedEnv.RABBITMQ_PASS,
     serviceName: validatedEnv.RBT_SERVICE_NAME,
-    queueName: validatedEnv.RBT_QUEUE_NAME,
+    defaultQueueName: validatedEnv.RBT_QUEUE_NAME,
+    
   },
   postgress: {
     POSTGRES_HOST: validatedEnv.POSTGRES_HOST,

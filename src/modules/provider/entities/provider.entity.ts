@@ -31,4 +31,10 @@ export class ProviderEntity {
     default: 10000,
   })
   timeout!: number;
+
+  @Column()
+  createdAt!: Date;
+
+  @Column()
+  updatedAt!: Date;
 }

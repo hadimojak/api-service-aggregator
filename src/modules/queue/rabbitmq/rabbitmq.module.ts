@@ -14,11 +14,13 @@ import { RabbitmqService } from './rabbitmq.service';
       useFactory: (): ClientProxy =>
         ClientProxyFactory.create({
           transport: Transport.RMQ,
+
+          
           options: {
             urls: [
               `amqp://${ConfigService.config.rabbitmq.user}:${ConfigService.config.rabbitmq.password}@${ConfigService.config.rabbitmq.host}:${ConfigService.config.rabbitmq.port}`,
             ],
-            queue: ConfigService.config.rabbitmq.queueName,
+            queue: ConfigService.config.rabbitmq.defaultQueueName,
             queueOptions: { durable: true },
             noAck: true,
           },
