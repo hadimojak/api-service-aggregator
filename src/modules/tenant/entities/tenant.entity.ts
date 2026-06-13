@@ -20,9 +20,6 @@ export class TenantEntity {
   })
   isActive!: boolean;
 
-  @Column()
-  createdAt: Date = new Date();
-
-  @Column()
-  updatedAt!: Date;
+  @Column({ default: 100 })
+  rateLimitPerMin!: number;
 }

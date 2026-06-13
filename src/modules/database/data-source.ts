@@ -2,6 +2,7 @@ import 'dotenv/config';
 import { DataSource } from 'typeorm';
 import { ConfigService } from '../../config/config.service';
 import { TenantEntity } from '../tenant/entities/tenant.entity';
+import { ProviderEntity } from '../provider/entities/provider.entity';
 
 export default new DataSource({
   type: 'postgres',
@@ -12,6 +13,7 @@ export default new DataSource({
   database: ConfigService.config.postgress.POSTGRES_DB,
   entities: [
     TenantEntity,
+    ProviderEntity,
     // Add entities here
   ],
 
