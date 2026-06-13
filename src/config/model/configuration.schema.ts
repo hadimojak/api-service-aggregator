@@ -1,6 +1,7 @@
 import * as Joi from 'joi';
+import { envValidationInterface } from './env.validation.interface';
 
-export const ConfigValidationSchema = Joi.object({
+export const ConfigValidationSchema = Joi.object<envValidationInterface>({
   PORT: Joi.number().port().default(3000),
   //redis
   REDIS_HOST: Joi.string().hostname().required(),
@@ -14,6 +15,7 @@ export const ConfigValidationSchema = Joi.object({
   RBT_SERVICE_NAME: Joi.string().default('RABBITMQ_SERVICE'),
   RBT_QUEUE_NAME: Joi.string().default('API_JOB'),
   //postgress
+  POSTGRES_HOST: Joi.string().hostname().required(),
   POSTGRES_PORT: Joi.number().port().default(5432),
   POSTGRES_DB: Joi.string().required(),
   POSTGRES_USER: Joi.string().alphanum().min(3).required(),

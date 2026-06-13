@@ -1,0 +1,22 @@
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+
+@Entity('tenants')
+export class TenantEntity {
+  @PrimaryGeneratedColumn('uuid')
+  id!: string;
+
+  @Column({
+    length: 255,
+  })
+  name!: string;
+
+  @Column({
+    unique: true,
+  })
+  apiKey!: string;
+
+  @Column({
+    default: true,
+  })
+  isActive!: boolean;
+}

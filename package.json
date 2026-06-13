@@ -17,7 +17,10 @@
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "jest --config ./test/jest-e2e.json"
+    "test:e2e": "jest --config ./test/jest-e2e.json",
+    "mig:gen:dev": "cross-env NODE_ENV=dev typeorm-ts-node-commonjs -d src/modules/database/data-source.ts migration:generate src/modules/database/migrations/%npm_config_name%",
+    "mig:run:dev": "cross-env NODE_ENV=dev typeorm-ts-node-commonjs -d src/modules/database/data-source.ts migration:run",
+    "mig:revert:dev": "cross-env NODE_ENV=dev typeorm-ts-node-commonjs -d src/modules/database/data-source.ts migration:revert"
   },
   "dependencies": {
     "@nestjs/cache-manager": "^3.1.2",

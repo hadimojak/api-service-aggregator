@@ -2,6 +2,7 @@ import * as dotenv from 'dotenv';
 import * as fs from 'fs';
 import * as path from 'path';
 import { ConfigValidationSchema } from './model/configuration.schema';
+import { envValidationInterface } from './model/env.validation.interface';
 
 // 1. Determine the environment
 const env = process.env.APP_ENV || 'dev';
@@ -32,20 +33,27 @@ if (error) {
 export const config = {
   env,
   app: {
-    port: validatedEnv.PORT ,
+    port: validatedEnv.PORT,
   },
   redis: {
-    host: validatedEnv.HOST_REDIS ,
-    port: validatedEnv.REDIS_PORT ,
-    password: validatedEnv.REDIS_PASS ,
+    host: validatedEnv.REDIS_HOST,
+    port: validatedEnv.REDIS_PORT,
+    password: validatedEnv.REDIS_PASS,
   },
   rabbitmq: {
-    host: validatedEnv.RABBITMQ_HOST ,
-    port: validatedEnv.RABBITMQ_PORT ,
-    user: validatedEnv.RABBITMQ_USER ,
-    password: validatedEnv.RABBITMQ_PASS ,
-    serviceName: validatedEnv.RBT_SERVICE_NAME ,
-    queueName: validatedEnv.RBT_QUEUE_NAME ,
+    host: validatedEnv.RABBITMQ_HOST,
+    port: validatedEnv.RABBITMQ_PORT,
+    user: validatedEnv.RABBITMQ_USER,
+    password: validatedEnv.RABBITMQ_PASS,
+    serviceName: validatedEnv.RBT_SERVICE_NAME,
+    queueName: validatedEnv.RBT_QUEUE_NAME,
+  },
+  postgress: {
+    POSTGRES_HOST: validatedEnv.POSTGRES_HOST,
+    POSTGRES_PORT: validatedEnv.POSTGRES_PORT,
+    POSTGRES_DB: validatedEnv.POSTGRES_DB,
+    POSTGRES_USER: validatedEnv.POSTGRES_USER,
+    POSTGRES_PASSWORD: validatedEnv.POSTGRES_PASSWORD,
   },
 } as const;
 

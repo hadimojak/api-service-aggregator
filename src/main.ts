@@ -8,6 +8,7 @@ import { AppModule } from './app.module';
 import { Logger } from '@nestjs/common';
 import { RedisService } from './modules/cache/redis/redis.service';
 import { RabbitmqService } from './modules/queue/rabbitmq/rabbitmq.service';
+import { DataSource } from 'typeorm';
 
 async function bootstrap() {
   const logger = new Logger('Bootstrap');
@@ -16,7 +17,7 @@ async function bootstrap() {
     AppModule,
     new FastifyAdapter(),
     {
-      logger: ['log', 'error', 'warn', 'debug', 'verbose'], // <-- Enable this explicitly
+      logger: ['log', 'error', 'warn', 'debug', 'verbose'],
     },
   );
 
@@ -28,11 +29,17 @@ async function bootstrap() {
 
     const rabbitmqService = app.get(RabbitmqService);
     await rabbitmqService.checkConnection();
-  } catch (error) {
-    console.log(error);
 
+    const dataSource = app.get(DataSource);
+    const options = dataSource.options as any;
+    if (dataSource.isInitialized) {
+      logger.log(
+        `PostgreSQL connected | ${options.host}:${options.port}/${options.database}`,
+      );
+    } else return new Error('PostgreSQL connection failed');
+  } catch (error) {
     logger.error(
-      'Server startup aborted because Redis or RabbitMQ is not connected.',
+      'Server startup aborted because Redis or RabbitMQ or postgress is not connected.',
       error instanceof Error ? error.stack : String(error),
     );
     await app.close();

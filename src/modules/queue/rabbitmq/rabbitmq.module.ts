@@ -10,8 +10,7 @@ import { RabbitmqService } from './rabbitmq.service';
 @Module({
   providers: [
     {
-      provide: 'RABBITMQ_SERVICE',
-      inject: [ConfigService],
+      provide: ConfigService.config.rabbitmq.serviceName,
       useFactory: (): ClientProxy =>
         ClientProxyFactory.create({
           transport: Transport.RMQ,
