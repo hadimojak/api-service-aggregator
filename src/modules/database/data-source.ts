@@ -3,6 +3,7 @@ import { DataSource } from 'typeorm';
 import { ConfigService } from '../../config/config.service';
 import { TenantEntity } from '../tenant/entities/tenant.entity';
 import { ProviderEntity } from '../provider/entities/provider.entity';
+import { RequestLogEntity } from '../log/entities/request-log.entity';
 
 export default new DataSource({
   type: 'postgres',
@@ -14,6 +15,7 @@ export default new DataSource({
   entities: [
     TenantEntity,
     ProviderEntity,
+    RequestLogEntity,
     // Add entities here
   ],
 

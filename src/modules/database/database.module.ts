@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { DatabaseService } from './database.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { ConfigService } from 'src/config/config.service';
+import { ConfigService } from '../../config/config.service';
 
 @Module({
   providers: [DatabaseService],

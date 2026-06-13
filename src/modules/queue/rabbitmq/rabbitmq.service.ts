@@ -1,7 +1,7 @@
 import { Injectable, Inject, OnModuleDestroy, Logger } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 import { lastValueFrom } from 'rxjs';
-import { ConfigService } from 'src/config/config.service';
+import { ConfigService } from '../../../config/config.service';
 
 @Injectable()
 export class RabbitmqService implements OnModuleDestroy {

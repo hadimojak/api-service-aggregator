@@ -4,7 +4,7 @@ import {
   ClientProxy,
   Transport,
 } from '@nestjs/microservices';
-import { ConfigService } from 'src/config/config.service';
+import { ConfigService } from '../../../config/config.service';
 import { RabbitmqService } from './rabbitmq.service';
 
 @Module({
