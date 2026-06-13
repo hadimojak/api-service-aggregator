@@ -36,13 +36,13 @@ Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
 ## Docker
 
 docker compose --env-file .env.dev up -d
-docker compose --env-file .env.dev down
+docker compose --env-file .env.dev down -v
 
 docker compose --env-file .env.stage up -d
-docker compose --env-file .env.stage down
+docker compose --env-file .env.stage down -v
 
 docker compose --env-file .env.prod up -d
-docker compose --env-file .env.prod down
+docker compose --env-file .env.prod down -v
 
 ## enviroment
 
