@@ -46,7 +46,6 @@ export const config = {
     password: validatedEnv.RABBITMQ_PASS,
     serviceName: validatedEnv.RBT_SERVICE_NAME,
     defaultQueueName: validatedEnv.RBT_QUEUE_NAME,
-    
   },
   postgress: {
     POSTGRES_HOST: validatedEnv.POSTGRES_HOST,
