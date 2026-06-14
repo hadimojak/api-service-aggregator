@@ -6,6 +6,7 @@ import { TenantModule } from './modules/tenant/tenant.module';
 import { DatabaseModule } from './modules/database/database.module';
 import { ProviderModule } from './modules/provider/provider.module';
 import { LogModule } from './modules/log/log.module';
+import { TestModule } from './test/test.module';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { LogModule } from './modules/log/log.module';
     DatabaseModule,
     ProviderModule,
     LogModule,
+    TestModule,
   ],
   controllers: [],
   providers: [],

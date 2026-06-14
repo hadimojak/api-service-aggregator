@@ -5,7 +5,7 @@ import {
 } from '@nestjs/platform-fastify';
 import { ConfigService } from './config/config.service';
 import { AppModule } from './app.module';
-import { Logger } from '@nestjs/common';
+import { Logger, ValidationPipe } from '@nestjs/common';
 import { RedisService } from './modules/cache/redis/redis.service';
 import { RabbitmqService } from './modules/queue/rabbitmq/rabbitmq.service';
 import { DataSource } from 'typeorm';
@@ -19,6 +19,14 @@ async function bootstrap() {
     {
       logger: ['log', 'error', 'warn', 'debug', 'verbose'],
     },
+  );
+
+  app.useGlobalPipes(
+    new ValidationPipe({
+      whitelist: true,
+      forbidNonWhitelisted: true,
+      transform: true,
+    }),
   );
 
   try {
