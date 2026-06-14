@@ -4,7 +4,7 @@ import {
   ConflictException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Not, Repository } from 'typeorm';
 import { ProviderEntity } from './entities/provider.entity';
 import { CreateProviderDto } from '../../common/dto/create-provider.dto';
 import { ModifyResultDto } from '../../common/dto/create-result.dto';
@@ -55,8 +55,8 @@ export class ProviderService {
       throw new NotFoundException(`Provider ${id} not found`);
     }
 
-    const duplicateCode = await this.providerRepo.find({
-      where: { code: updateDto.code },
+    const duplicateCode = await this.providerRepo.findOne({
+      where: { code: updateDto.code, id: Not(id) },
     });
     if (duplicateCode) {
       throw new NotFoundException(`Provider code duplication error`);
@@ -79,8 +79,8 @@ export class ProviderService {
       throw new NotFoundException(`Provider ${id} not found`);
     }
 
-    const duplicateCode = await this.providerRepo.find({
-      where: { code: updateDto.code },
+    const duplicateCode = await this.providerRepo.findOne({
+      where: { code: updateDto.code, id: Not(id) },
     });
     if (duplicateCode) {
       throw new NotFoundException(`Provider code duplication error`);
