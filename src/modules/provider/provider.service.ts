@@ -4,50 +4,37 @@ import {
   ConflictException,
   InternalServerErrorException,
 } from '@nestjs/common';
-import { HttpService } from '@nestjs/axios';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { firstValueFrom } from 'rxjs';
 import { ProviderEntity } from './entities/provider.entity';
 import { CreateProviderDto } from '../../common/dto/create-provider.dto';
-import { CreateRelustDto } from '../../common/dto/create-result.dto';
+import { ModifyResultDto } from '../../common/dto/create-result.dto';
 import { UUID } from 'crypto';
+import { ProviderQueryDto } from '../../common/dto/provider-query.dto';
 
 @Injectable()
 export class ProviderService {
   constructor(
     @InjectRepository(ProviderEntity)
     private readonly providerRepo: Repository<ProviderEntity>,
-    private readonly httpService: HttpService,
   ) {}
 
-  async excute(providerType: string, endpoint: string, payload?: unknown) {
-    const provider = await this.providerRepo.findOne({
-      where: {
-        type: providerType,
-        isActive: true,
-      },
+  async find(query: ProviderQueryDto): Promise<ProviderEntity[] | []> {
+    return this.providerRepo.find({
+      where: query,
       order: { priority: 'ASC' },
     });
-
-    if (!provider)
-      throw new NotFoundException(`provider no found: ${providerType}`);
-
-    const response = await firstValueFrom(
-      this.httpService.post(`${provider.baseUrl}${endpoint}`, payload, {
-        timeout: provider.timeout,
-
-        headers: {
-          'x-api-key': provider.apiKey,
-        },
-      }),
-    );
-
-    return response.data;
   }
 
-  async create(createDto: CreateProviderDto): Promise<CreateRelustDto> {
-    try {
+  async findById(id: UUID): Promise<ProviderEntity> {
+    const provider = await this.providerRepo.findOne({ where: { id } });
+
+    if (!provider) throw new NotFoundException(`Provider ${id} not found`);
+
+    return provider;
+  }
+
+  async create(createDto: CreateProviderDto): Promise<ModifyResultDto> {
     const existing = await this.providerRepo.findOneBy({
       code: createDto.code,
     });
@@ -59,9 +46,47 @@ export class ProviderService {
 
     const provider = this.providerRepo.create(createDto);
     await this.providerRepo.save(provider);
-    return { result: { id: <UUID>provider.id } };
-    } catch (error) {
-      throw new InternalServerErrorException(error);
+    return { result: { id: <UUID>provider.id }, message: 'row created' };
+  }
+
+  async update(
+    id: UUID,
+    updateDto: CreateProviderDto,
+  ): Promise<ModifyResultDto> {
+    const provider = await this.providerRepo.findOneBy({ id });
+    if (!provider) {
+      throw new NotFoundException(
+        `Provider with code ${updateDto.code} not exists`,
+      );
     }
+
+    await this.providerRepo.save(updateDto);
+    return { result: { id }, message: 'row udpated' };
+  }
+
+  async partialUpdate(
+    id: UUID,
+    updateDto: Partial<CreateProviderDto>,
+  ): Promise<ModifyResultDto> {
+    const provider = await this.providerRepo.preload({ id, ...updateDto });
+    if (!provider) {
+      throw new NotFoundException(
+        `Provider with code ${updateDto.code} not exists`,
+      );
+    }
+
+    await this.providerRepo.save(provider);
+    return { result: { id }, message: 'row partialy updated' };
+  }
+
+  async remove(id: UUID): Promise<ModifyResultDto> {
+    const provider = await this.providerRepo.findOne({ where: { id } });
+
+    if (!provider) {
+      throw new NotFoundException(`Provider ${id} not found`);
+    }
+
+    await this.providerRepo.softDelete(id);
+    return { result: { id }, message: 'provider removed' };
   }
 }

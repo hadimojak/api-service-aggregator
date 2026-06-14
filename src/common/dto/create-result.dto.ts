@@ -1,5 +1,6 @@
-import { UUID } from "crypto";
+import { UUID } from 'crypto';
 
-export interface CreateRelustDto {
+export interface ModifyResultDto {
   result: { id: UUID };
+  message: string;
 }
