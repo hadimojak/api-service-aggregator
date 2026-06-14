@@ -13,13 +13,14 @@ export class ProviderEntity {
 
   @Column({
     length: 255,
+    unique: true,
   })
   code!: string;
 
   @Column()
   type!: string;
 
-  @Column()
+  @Column({ unique: true })
   baseUrl!: string;
 
   @Column()

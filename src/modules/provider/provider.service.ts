@@ -1,10 +1,11 @@
 import {
   Injectable,
   NotFoundException,
+  BadRequestException,
   ConflictException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Not, Repository } from 'typeorm';
+import { Not, QueryFailedError, Repository } from 'typeorm';
 import { ProviderEntity } from './entities/provider.entity';
 import { CreateProviderDto } from '../../common/dto/create-provider.dto';
 import { ModifyResultDto } from '../../common/dto/create-result.dto';
@@ -32,18 +33,23 @@ export class ProviderService {
   }
 
   async create(createDto: CreateProviderDto): Promise<ModifyResultDto> {
-    const existing = await this.providerRepo.findOneBy({
-      code: createDto.code,
-    });
-    if (existing) {
-      throw new ConflictException(
-        `Provider with code ${createDto.code} already exists`,
-      );
-    }
+    try {
+      const provider = this.providerRepo.create(createDto);
+      await this.providerRepo.save(provider);
+      return { result: { id: provider.id }, message: 'row created' };
+    } catch (error) {
+      if (error instanceof QueryFailedError) {
+        const driverError = error.driverError;
 
-    const provider = this.providerRepo.create(createDto);
-    await this.providerRepo.save(provider);
-    return { result: { id: provider.id }, message: 'row created' };
+        if (driverError?.code === '23505') {
+          throw new ConflictException(
+            'Provider code or baseUrl already exists',
+          );
+        }
+      }
+
+      throw new BadRequestException('Failed to create provider');
+    }
   }
 
   async update(
@@ -56,7 +62,10 @@ export class ProviderService {
     }
 
     const duplicateCode = await this.providerRepo.findOne({
-      where: { code: updateDto.code, id: Not(id) },
+      where: [
+        { code: updateDto.code, id: Not(id) },
+        { baseUrl: updateDto.baseUrl, id: Not(id) },
+      ],
     });
     if (duplicateCode) {
       throw new NotFoundException(`Provider code duplication error`);
@@ -80,7 +89,10 @@ export class ProviderService {
     }
 
     const duplicateCode = await this.providerRepo.findOne({
-      where: { code: updateDto.code, id: Not(id) },
+      where: [
+        { code: updateDto.code, id: Not(id) },
+        { baseUrl: updateDto.baseUrl, id: Not(id) },
+      ],
     });
     if (duplicateCode) {
       throw new NotFoundException(`Provider code duplication error`);
