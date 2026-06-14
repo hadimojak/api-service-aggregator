@@ -13,17 +13,34 @@ import {
 } from '@nestjs/common';
 import { ProviderService } from './provider.service';
 import { CreateProviderDto } from '../../common/dto/create-provider.dto';
+import {
+  ApiBadRequestResponse,
+  ApiCreatedResponse,
+  ApiOkResponse,
+  ApiOperation,
+  ApiParam,
+  ApiTags,
+} from '@nestjs/swagger';
+import { ProviderEntity } from './entities/provider.entity';
+import { ModifyResultDto } from '../../common/dto/create-result.dto';
 
 @Controller('admin/provider')
+@ApiTags('provider')
 export class ProviderController {
   constructor(private readonly providerService: ProviderService) {}
 
   @Get()
+  @ApiOperation({ summary: 'List providers (filterable)' })
+  @ApiOkResponse({ type: ProviderEntity, isArray: true })
   async providersInquiry(@Query() query: Partial<CreateProviderDto>) {
     return this.providerService.find(query);
   }
 
   @Get(':id')
+  @ApiOperation({ summary: 'Get provider by id' })
+  @ApiParam({ name: 'id', description: 'Provider UUID' })
+  @ApiOkResponse({ type: ProviderEntity })
+  @ApiBadRequestResponse({ description: 'Invalid Provider ID format' })
   async providerInquiry(
     @Param(
       'id',
@@ -38,11 +55,17 @@ export class ProviderController {
   }
 
   @Post()
+  @ApiOperation({ summary: 'Create provider' })
+  @ApiCreatedResponse({ type: ModifyResultDto })
   async createProvider(@Body() createProviderDto: CreateProviderDto) {
     return this.providerService.create(createProviderDto);
   }
 
   @Put(':id')
+  @ApiOperation({ summary: 'Update provider (replace)' })
+  @ApiParam({ name: 'id', description: 'Provider UUID' })
+  @ApiOkResponse({ type: ModifyResultDto })
+  @ApiBadRequestResponse({ description: 'Invalid Provider ID format' })
   async updateProvider(
     @Param(
       'id',
@@ -58,6 +81,10 @@ export class ProviderController {
   }
 
   @Patch(':id')
+  @ApiOperation({ summary: 'Update provider (partial)' })
+  @ApiParam({ name: 'id', description: 'Provider UUID' })
+  @ApiOkResponse({ type: ModifyResultDto })
+  @ApiBadRequestResponse({ description: 'Invalid Provider ID format' })
   async partialUpdateProvider(
     @Param(
       'id',
@@ -73,6 +100,10 @@ export class ProviderController {
   }
 
   @Delete(':id')
+  @ApiOperation({ summary: 'Delete provider (soft delete)' })
+  @ApiParam({ name: 'id', description: 'Provider UUID' })
+  @ApiOkResponse({ type: ModifyResultDto })
+  @ApiBadRequestResponse({ description: 'Invalid Provider ID format' })
   async deleteProvider(
     @Param(
       'id',

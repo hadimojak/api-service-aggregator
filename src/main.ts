@@ -9,6 +9,7 @@ import { Logger, ValidationPipe } from '@nestjs/common';
 import { RedisService } from './modules/cache/redis/redis.service';
 import { RabbitmqService } from './modules/queue/rabbitmq/rabbitmq.service';
 import { DataSource } from 'typeorm';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 async function bootstrap() {
   const logger = new Logger('Bootstrap');
@@ -21,6 +22,12 @@ async function bootstrap() {
     },
   );
 
+  app.enableCors({
+    origin: ['http://localhost:5173', 'http://localhost:8000'],
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    credentials: true,
+  });
+
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true,
@@ -28,6 +35,15 @@ async function bootstrap() {
       transform: true,
     }),
   );
+
+  const swaggerConfig = new DocumentBuilder()
+    .setTitle('API Service Aggregator')
+    .setDescription('Admin APIs for managing providers and routes')
+    .setVersion('1.0.0')
+    .addTag('provider')
+    .build();
+  const swaggerDocument = SwaggerModule.createDocument(app, swaggerConfig);
+  SwaggerModule.setup('docs', app, swaggerDocument);
 
   try {
     await app.init();
