@@ -2,15 +2,12 @@ import {
   Injectable,
   NotFoundException,
   ConflictException,
-  InternalServerErrorException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { ProviderEntity } from './entities/provider.entity';
 import { CreateProviderDto } from '../../common/dto/create-provider.dto';
 import { ModifyResultDto } from '../../common/dto/create-result.dto';
-import { UUID } from 'crypto';
-import { ProviderQueryDto } from '../../common/dto/provider-query.dto';
 
 @Injectable()
 export class ProviderService {
@@ -19,14 +16,14 @@ export class ProviderService {
     private readonly providerRepo: Repository<ProviderEntity>,
   ) {}
 
-  async find(query: ProviderQueryDto): Promise<ProviderEntity[] | []> {
+  async find(query: Partial<CreateProviderDto>): Promise<ProviderEntity[]> {
     return this.providerRepo.find({
       where: query,
       order: { priority: 'ASC' },
     });
   }
 
-  async findById(id: UUID): Promise<ProviderEntity> {
+  async findById(id: string): Promise<ProviderEntity> {
     const provider = await this.providerRepo.findOne({ where: { id } });
 
     if (!provider) throw new NotFoundException(`Provider ${id} not found`);
@@ -46,41 +43,55 @@ export class ProviderService {
 
     const provider = this.providerRepo.create(createDto);
     await this.providerRepo.save(provider);
-    return { result: { id: <UUID>provider.id }, message: 'row created' };
+    return { result: { id: provider.id }, message: 'row created' };
   }
 
   async update(
-    id: UUID,
+    id: string,
     updateDto: CreateProviderDto,
   ): Promise<ModifyResultDto> {
     const provider = await this.providerRepo.findOneBy({ id });
     if (!provider) {
-      throw new NotFoundException(
-        `Provider with code ${updateDto.code} not exists`,
-      );
+      throw new NotFoundException(`Provider ${id} not found`);
     }
 
-    await this.providerRepo.save(updateDto);
+    const duplicateCode = await this.providerRepo.find({
+      where: { code: updateDto.code },
+    });
+    if (duplicateCode) {
+      throw new NotFoundException(`Provider code duplication error`);
+    }
+
+    await this.providerRepo.update(id, { ...updateDto, updatedAt: new Date() });
     return { result: { id }, message: 'row udpated' };
   }
 
   async partialUpdate(
-    id: UUID,
+    id: string,
     updateDto: Partial<CreateProviderDto>,
   ): Promise<ModifyResultDto> {
-    const provider = await this.providerRepo.preload({ id, ...updateDto });
+    const provider = await this.providerRepo.preload({
+      id,
+      ...updateDto,
+      updatedAt: new Date(),
+    });
     if (!provider) {
-      throw new NotFoundException(
-        `Provider with code ${updateDto.code} not exists`,
-      );
+      throw new NotFoundException(`Provider ${id} not found`);
+    }
+
+    const duplicateCode = await this.providerRepo.find({
+      where: { code: updateDto.code },
+    });
+    if (duplicateCode) {
+      throw new NotFoundException(`Provider code duplication error`);
     }
 
     await this.providerRepo.save(provider);
     return { result: { id }, message: 'row partialy updated' };
   }
 
-  async remove(id: UUID): Promise<ModifyResultDto> {
-    const provider = await this.providerRepo.findOne({ where: { id } });
+  async remove(id: string): Promise<ModifyResultDto> {
+    const provider = await this.providerRepo.findOneBy({ id });
 
     if (!provider) {
       throw new NotFoundException(`Provider ${id} not found`);

@@ -1,9 +1,11 @@
 import {
+  BadRequestException,
   Body,
   Controller,
   Delete,
   Get,
   Param,
+  ParseUUIDPipe,
   Patch,
   Post,
   Put,
@@ -11,21 +13,28 @@ import {
 } from '@nestjs/common';
 import { ProviderService } from './provider.service';
 import { CreateProviderDto } from '../../common/dto/create-provider.dto';
-import { ProviderQueryDto } from '../../common/dto/provider-query.dto';
-import { UUID } from 'crypto';
 
 @Controller('admin/provider')
 export class ProviderController {
   constructor(private readonly providerService: ProviderService) {}
 
   @Get()
-  async providersInquiry(@Query() query: ProviderQueryDto) {
+  async providersInquiry(@Query() query: Partial<CreateProviderDto>) {
     return this.providerService.find(query);
   }
 
   @Get(':id')
-  async providerInquiry(@Param() params: { id: UUID }) {
-    return this.providerService.findById(params.id);
+  async providerInquiry(
+    @Param(
+      'id',
+      new ParseUUIDPipe({
+        exceptionFactory: () =>
+          new BadRequestException('Invalid Provider ID format'),
+      }),
+    )
+    id: string,
+  ) {
+    return this.providerService.findById(id);
   }
 
   @Post()
@@ -35,25 +44,45 @@ export class ProviderController {
 
   @Put(':id')
   async updateProvider(
-    @Param() params: { id: UUID },
+    @Param(
+      'id',
+      new ParseUUIDPipe({
+        exceptionFactory: () =>
+          new BadRequestException('Invalid Provider ID format'),
+      }),
+    )
+    id: string,
     @Body() updateProviderDto: CreateProviderDto,
   ) {
-    return this.providerService.update(params.id, updateProviderDto);
+    return this.providerService.update(id, updateProviderDto);
   }
 
   @Patch(':id')
   async partialUpdateProvider(
-    @Param() params: { id: UUID },
+    @Param(
+      'id',
+      new ParseUUIDPipe({
+        exceptionFactory: () =>
+          new BadRequestException('Invalid Provider ID format'),
+      }),
+    )
+    id: string,
     @Body() partialUpdateProviderDto: Partial<CreateProviderDto>,
   ) {
-    return this.providerService.partialUpdate(
-      params.id,
-      partialUpdateProviderDto,
-    );
+    return this.providerService.partialUpdate(id, partialUpdateProviderDto);
   }
 
   @Delete(':id')
-  async deleteProvider(@Param() params: { id: UUID }) {
-    return this.providerService.remove(params.id);
+  async deleteProvider(
+    @Param(
+      'id',
+      new ParseUUIDPipe({
+        exceptionFactory: () =>
+          new BadRequestException('Invalid Provider ID format'),
+      }),
+    )
+    id: string,
+  ) {
+    return this.providerService.remove(id);
   }
 }

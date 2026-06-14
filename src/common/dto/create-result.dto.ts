@@ -1,6 +1,6 @@
 import { UUID } from 'crypto';
 
 export interface ModifyResultDto {
-  result: { id: UUID };
+  result: { id: string };
   message: string;
 }
