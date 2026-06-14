@@ -55,6 +55,7 @@ npm run mig:gen:dev --name=name
 
 ## tree
 
+
 ```
 api-service-aggregator
 ├─ .env.example
@@ -71,6 +72,7 @@ api-service-aggregator
 │  │  ├─ decorators
 │  │  │  └─ temp.ts
 │  │  ├─ dto
+│  │  │  ├─ create-request-log.dto.ts
 │  │  │  └─ create-thirdparty.dto.ts
 │  │  ├─ guards
 │  │  │  └─ tenant.auth.guard.ts
@@ -97,7 +99,7 @@ api-service-aggregator
 │     │  ├─ database.service.spec.ts
 │     │  ├─ database.service.ts
 │     │  └─ migrations
-│     │     └─ 1781352205082-createtenantTable_createProviderTable.ts
+│     │     └─ 1781356719895-recheck.ts
 │     ├─ log
 │     │  ├─ entities
 │     │  │  └─ request-log.entity.ts

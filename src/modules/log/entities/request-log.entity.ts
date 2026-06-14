@@ -1,6 +1,6 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
-@Entity('request_logs')
+@Entity('request_log')
 export class RequestLogEntity {
   @PrimaryGeneratedColumn('uuid')
   id!: string;
