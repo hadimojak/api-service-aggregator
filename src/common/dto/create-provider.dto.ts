@@ -1,6 +1,13 @@
-import { 
-  IsString, IsNotEmpty, IsInt, IsBoolean, IsOptional, 
-  IsUrl, Min, Max, Length 
+import {
+  IsString,
+  IsNotEmpty,
+  IsInt,
+  IsBoolean,
+  IsOptional,
+  IsUrl,
+  Min,
+  Max,
+  Length,
 } from 'class-validator';
 import { Transform } from 'class-transformer';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
@@ -29,7 +36,10 @@ export class CreateProviderDto {
   @IsNotEmpty()
   apiKey!: string;
 
-  @ApiPropertyOptional({ default: 1, description: 'Higher numbers have higher priority' })
+  @ApiPropertyOptional({
+    default: 1,
+    description: 'Higher numbers have higher priority',
+  })
   @IsInt()
   @IsOptional()
   @Min(1)

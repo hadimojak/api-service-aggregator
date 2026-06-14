@@ -1,7 +1,5 @@
 import { Injectable, Inject, OnModuleDestroy, Logger } from '@nestjs/common';
-import {
-  ClientProxy,
-} from '@nestjs/microservices';
+import { ClientProxy } from '@nestjs/microservices';
 import { lastValueFrom } from 'rxjs';
 import { ConfigService } from '../../../config/config.service';
 import { LogService } from '../../log/log.service';
