@@ -106,6 +106,24 @@ export class ProviderController {
   ) {
     return this.providerService.partialUpdate(id, partialUpdateProviderDto);
   }
+  
+  @Patch(':id/state')
+  @ApiOperation({ summary: 'Update provider status (toggle)' })
+  @ApiParam({ name: 'id', description: 'Provider UUID' })
+  @ApiOkResponse({ type: ModifyResultDto })
+  @ApiBadRequestResponse({ description: 'Invalid Provider ID format' })
+  async changeState(
+    @Param(
+      'id',
+      new ParseUUIDPipe({
+        exceptionFactory: () =>
+          new BadRequestException('Invalid Provider ID format'),
+      }),
+    )
+    id: string,
+  ) {
+    return this.providerService.toggleState(id);
+  }
 
   @Delete(':id')
   @ApiOperation({ summary: 'Delete provider (soft delete)' })

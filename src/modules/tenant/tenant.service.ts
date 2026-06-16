@@ -125,6 +125,18 @@ export class TenantService {
     return { result: { id }, message: 'row partialy updated' };
   }
 
+  async toggleState(id: string): Promise<ModifyResultDto> {
+    const ternant = await this.tenantRepo.findOneBy({ id });
+    if (!ternant) {
+      throw new NotFoundException(`ternant ${id} not found`);
+    }
+
+    ternant.isActive = !ternant.isActive;
+
+    await this.tenantRepo.save(ternant);
+    return { result: { id }, message: 'row partialy updated' };
+  }
+
   async remove(id: string): Promise<ModifyResultDto> {
     const provider = await this.tenantRepo.findOneBy({ id });
 

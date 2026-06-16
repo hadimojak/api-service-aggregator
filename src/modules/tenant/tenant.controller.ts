@@ -102,6 +102,24 @@ export class TenantController {
     return this.tenantService.partialUpdate(id, partialUpdateTenantDto);
   }
 
+  @Patch(':id/state')
+  @ApiOperation({ summary: 'Update tenant status (toggle)' })
+  @ApiParam({ name: 'id', description: 'tenant UUID' })
+  @ApiOkResponse({ type: ModifyResultDto })
+  @ApiBadRequestResponse({ description: 'Invalid Tenant ID format' })
+  async changeState(
+    @Param(
+      'id',
+      new ParseUUIDPipe({
+        exceptionFactory: () =>
+          new BadRequestException('Invalid Tenant ID format'),
+      }),
+    )
+    id: string,
+  ) {
+    return this.tenantService.toggleState(id);
+  }
+
   @Delete(':id')
   @ApiOperation({ summary: 'Delete provider (soft delete)' })
   @ApiParam({ name: 'id', description: 'Provider UUID' })

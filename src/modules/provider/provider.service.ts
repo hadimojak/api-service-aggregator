@@ -135,6 +135,18 @@ export class ProviderService {
     return { result: { id }, message: 'row partialy updated' };
   }
 
+  async toggleState(id: string): Promise<ModifyResultDto> {
+    const provider = await this.providerRepo.findOneBy({ id });
+    if (!provider) {
+      throw new NotFoundException(`Provider ${id} not found`);
+    }
+
+    provider.isActive = !provider.isActive;
+
+    await this.providerRepo.save(provider);
+    return { result: { id }, message: 'row partialy updated' };
+  }
+
   async remove(id: string): Promise<ModifyResultDto> {
     const provider = await this.providerRepo.findOneBy({ id });
 
