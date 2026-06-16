@@ -5,10 +5,17 @@ import {
   ConflictException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Not, QueryFailedError, Repository } from 'typeorm';
+import {
+  ILike,
+  LessThanOrEqual,
+  Not,
+  QueryFailedError,
+  Repository,
+} from 'typeorm';
 import { ProviderEntity } from './entities/provider.entity';
 import { CreateProviderDto } from '../../common/dto/create-provider.dto';
 import { ModifyResultDto } from '../../common/dto/create-result.dto';
+import { ProviderFilterDto } from './provider.controller';
 
 @Injectable()
 export class ProviderService {
@@ -17,9 +24,35 @@ export class ProviderService {
     private readonly providerRepo: Repository<ProviderEntity>,
   ) {}
 
-  async find(query: Partial<CreateProviderDto>): Promise<ProviderEntity[]> {
-    return this.providerRepo.find({
-      where: query,
+  async find(query: ProviderFilterDto): Promise<ProviderEntity[]> {
+    const where: any = {};
+
+    if (query.code) {
+      where.code = ILike(`%${query.code}%`);
+    }
+
+    if (query.type) {
+      where.type = ILike(`%${query.type}%`);
+    }
+
+    if (query.baseUrl) {
+      where.baseUrl = ILike(`%${query.baseUrl}%`);
+    }
+
+    if (query.apiKey) {
+      where.apiKey = ILike(`%${query.apiKey}%`);
+    }
+
+    if (query.isActive !== undefined) {
+      where.isActive = query.isActive;
+    }
+
+    if (query.timeout !== undefined && query.timeout !== null) {
+      where.timeout = LessThanOrEqual(Number(query.timeout));
+    }
+
+    return await this.providerRepo.find({
+      where,
       order: { priority: 'ASC' },
     });
   }

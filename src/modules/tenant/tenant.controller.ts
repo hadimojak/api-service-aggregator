@@ -19,10 +19,13 @@ import {
   ApiOperation,
   ApiParam,
   ApiTags,
+  OmitType,
+  PartialType,
 } from '@nestjs/swagger';
 import { TenantEntity } from './entities/tenant.entity';
 import { ModifyResultDto } from '../../common/dto/create-result.dto';
 import { CreateTenantDto } from '../../common/dto/create-tenant.dto';
+
 
 @Controller('user/tenant')
 @ApiTags('tenant')

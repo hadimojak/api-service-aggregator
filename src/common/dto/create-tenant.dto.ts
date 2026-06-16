@@ -11,7 +11,10 @@ import { Transform } from 'class-transformer';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
 export class CreateTenantDto {
-  @ApiProperty({ description: 'The display name of the tenant', example: 'Acme Corp' })
+  @ApiProperty({
+    description: 'The display name of the tenant',
+    example: 'Acme Corp',
+  })
   @IsString()
   @IsNotEmpty()
   @Length(1, 255)
@@ -24,14 +27,22 @@ export class CreateTenantDto {
   @Transform(({ value }) => value?.trim())
   apiKey!: string;
 
-  @ApiPropertyOptional({ default: true, description: 'Whether the tenant is active' })
+  @ApiPropertyOptional({
+    description: 'Whether the tenant is active',
+  })
   @IsBoolean()
   @IsOptional()
-  isActive: boolean = true;
+  @Transform(({ value }) => {
+    if (value === 'true') return true;
+    if (value === 'false') return false;
+    return value;
+  })
+  isActive!: boolean;
 
-  @ApiPropertyOptional({ default: 100, description: 'Rate limit per minute' })
+  @ApiPropertyOptional({ description: 'Rate limit per minute' })
   @IsInt()
   @IsOptional()
   @Min(1)
-  rateLimitPerMin: number = 100;
+  @Transform(({ value }) => Number(value))
+  rateLimitPerMin!: number;
 }

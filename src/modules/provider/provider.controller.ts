@@ -20,9 +20,15 @@ import {
   ApiOperation,
   ApiParam,
   ApiTags,
+  OmitType,
+  PartialType,
 } from '@nestjs/swagger';
 import { ProviderEntity } from './entities/provider.entity';
 import { ModifyResultDto } from '../../common/dto/create-result.dto';
+
+export class ProviderFilterDto extends PartialType(
+  OmitType(CreateProviderDto, ['priority'] as const),
+) {}
 
 @Controller('admin/provider')
 @ApiTags('provider')
@@ -32,7 +38,9 @@ export class ProviderController {
   @Get()
   @ApiOperation({ summary: 'List providers (filterable)' })
   @ApiOkResponse({ type: ProviderEntity, isArray: true })
-  async providersInquiry(@Query() query: Partial<CreateProviderDto>) {
+  async providersInquiry(
+    @Query() query: ProviderFilterDto,
+  ) {
     return this.providerService.find(query);
   }
 

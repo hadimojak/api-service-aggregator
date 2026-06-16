@@ -5,7 +5,13 @@ import {
   ConflictException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Not, QueryFailedError, Repository } from 'typeorm';
+import {
+  ILike,
+  LessThanOrEqual,
+  Not,
+  QueryFailedError,
+  Repository,
+} from 'typeorm';
 import { TenantEntity } from './entities/tenant.entity';
 import { ModifyResultDto } from '../../common/dto/create-result.dto';
 import { CreateTenantDto } from '../../common/dto/create-tenant.dto';
@@ -18,8 +24,26 @@ export class TenantService {
   ) {}
 
   async find(query: Partial<CreateTenantDto>): Promise<TenantEntity[]> {
+    const where: any = {};
+
+    if (query.apiKey) {
+      where.apiKey = ILike(`%${query.apiKey}%`);
+    }
+
+    if (query.name) {
+      where.name = ILike(`%${query.name}%`);
+    }
+
+    if (query.isActive !== undefined) {
+      where.isActive = query.isActive;
+    }
+
+    if (query.rateLimitPerMin !== undefined && query.rateLimitPerMin !== null) {
+      where.rateLimitPerMin = LessThanOrEqual(Number(query.rateLimitPerMin));
+    }
+
     return this.tenantRepo.find({
-      where: query,
+      where,
     });
   }
 

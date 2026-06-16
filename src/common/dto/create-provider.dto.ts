@@ -16,7 +16,6 @@ export class CreateProviderDto {
   @ApiProperty({ description: 'Unique code identifier', example: 'PAYPAL_01' })
   @IsString()
   @IsNotEmpty()
-  @Length(2, 50)
   @Transform(({ value }) => value?.trim())
   code!: string;
 
@@ -27,7 +26,7 @@ export class CreateProviderDto {
   type!: string;
 
   @ApiProperty({ description: 'Base URL for the provider API' })
-  @IsUrl()
+  // @IsUrl()
   @IsNotEmpty()
   baseUrl!: string;
 
@@ -37,23 +36,27 @@ export class CreateProviderDto {
   apiKey!: string;
 
   @ApiPropertyOptional({
-    default: 1,
     description: 'Higher numbers have higher priority',
   })
   @IsInt()
   @IsOptional()
   @Min(1)
-  priority?: number = 1;
+  priority?: number;
 
-  @ApiPropertyOptional({ default: true })
+  @ApiPropertyOptional()
   @IsBoolean()
   @IsOptional()
-  isActive?: boolean = true;
+  @Transform(({ value }) => {
+    if (value === 'true') return true;
+    if (value === 'false') return false;
+    return value;
+  })
+  isActive?: boolean;
 
-  @ApiPropertyOptional({ default: 10000, description: 'Timeout in ms' })
+  @ApiPropertyOptional({ description: 'Timeout in ms' })
   @IsInt()
   @IsOptional()
   @Min(100)
-  @Max(60000)
-  timeout?: number = 10000;
+  @Transform(({ value }) => Number(value))
+  timeout?: number;
 }
