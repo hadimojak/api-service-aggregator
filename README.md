@@ -56,12 +56,15 @@ npm run mig:gen:dev --name=name
 ## tree
 
 
+
 ```
 api-service-aggregator
 ├─ .env.example
 ├─ .prettierrc
 ├─ docker-compose.yml
 ├─ eslint.config.mjs
+├─ mailhog
+│  └─ auth
 ├─ nest-cli.json
 ├─ package-lock.json
 ├─ package.json
@@ -72,8 +75,9 @@ api-service-aggregator
 │  │  ├─ decorators
 │  │  │  └─ temp.ts
 │  │  ├─ dto
+│  │  │  ├─ create-provider.dto.ts
 │  │  │  ├─ create-request-log.dto.ts
-│  │  │  └─ create-thirdparty.dto.ts
+│  │  │  └─ create-result.dto.ts
 │  │  ├─ guards
 │  │  │  └─ tenant.auth.guard.ts
 │  │  ├─ helpers
@@ -88,41 +92,46 @@ api-service-aggregator
 │  │     ├─ configuration.schema.ts
 │  │     └─ env.validation.interface.ts
 │  ├─ main.ts
-│  └─ modules
-│     ├─ cache
-│     │  └─ redis
-│     │     ├─ redis.module.ts
-│     │     └─ redis.service.ts
-│     ├─ database
-│     │  ├─ data-source.ts
-│     │  ├─ database.module.ts
-│     │  ├─ database.service.spec.ts
-│     │  ├─ database.service.ts
-│     │  └─ migrations
-│     │     └─ 1781356719895-recheck.ts
-│     ├─ log
-│     │  ├─ entities
-│     │  │  └─ request-log.entity.ts
-│     │  ├─ log.module.ts
-│     │  ├─ log.service.spec.ts
-│     │  └─ log.service.ts
-│     ├─ provider
-│     │  ├─ entities
-│     │  │  └─ provider.entity.ts
-│     │  ├─ interfaces
-│     │  │  └─ base-provider.interface.ts
-│     │  ├─ provider.module.ts
-│     │  └─ provider.service.ts
-│     ├─ queue
-│     │  └─ rabbitmq
-│     │     ├─ rabbitmq.module.ts
-│     │     └─ rabbitmq.service.ts
-│     └─ tenant
-│        ├─ entities
-│        │  └─ tenant.entity.ts
-│        ├─ tenant.module.ts
-│        ├─ tenant.service.spec.ts
-│        └─ tenant.service.ts
+│  ├─ modules
+│  │  ├─ cache
+│  │  │  └─ redis
+│  │  │     ├─ redis.module.ts
+│  │  │     └─ redis.service.ts
+│  │  ├─ database
+│  │  │  ├─ data-source.ts
+│  │  │  ├─ database.module.ts
+│  │  │  ├─ database.service.ts
+│  │  │  └─ migrations
+│  │  ├─ log
+│  │  │  ├─ consumers
+│  │  │  │  └─ log.consumer.ts
+│  │  │  ├─ entities
+│  │  │  │  └─ request-log.entity.ts
+│  │  │  ├─ log.module.ts
+│  │  │  └─ log.service.ts
+│  │  ├─ provider
+│  │  │  ├─ entities
+│  │  │  │  └─ provider.entity.ts
+│  │  │  ├─ interfaces
+│  │  │  │  └─ base-provider.interface.ts
+│  │  │  ├─ provider.controller.ts
+│  │  │  ├─ provider.module.ts
+│  │  │  └─ provider.service.ts
+│  │  ├─ queue
+│  │  │  └─ rabbitmq
+│  │  │     ├─ rabbitmq.module.ts
+│  │  │     └─ rabbitmq.service.ts
+│  │  └─ tenant
+│  │     ├─ entities
+│  │     │  └─ tenant.entity.ts
+│  │     ├─ tenant.module.ts
+│  │     └─ tenant.service.ts
+│  └─ test
+│     ├─ test.controller.spec.ts
+│     ├─ test.controller.ts
+│     ├─ test.module.ts
+│     ├─ test.service.spec.ts
+│     └─ test.service.ts
 ├─ test
 │  ├─ app.e2e-spec.ts
 │  └─ jest-e2e.json
