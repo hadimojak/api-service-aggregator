@@ -4,7 +4,9 @@ import {
   DeleteDateColumn,
   Entity,
   PrimaryGeneratedColumn,
+  OneToOne,
 } from 'typeorm';
+import { UserEntity } from '../../user/entities/user.entity';
 
 @Entity('tenant')
 export class TenantEntity {
@@ -41,4 +43,7 @@ export class TenantEntity {
 
   @DeleteDateColumn({ nullable: true })
   deletedAt!: Date;
+
+  @OneToOne(() => UserEntity, (user) => user.tenant, { nullable: true })
+  user?: UserEntity;
 }

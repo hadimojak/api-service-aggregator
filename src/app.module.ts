@@ -7,6 +7,8 @@ import { DatabaseModule } from './modules/database/database.module';
 import { ProviderModule } from './modules/provider/provider.module';
 import { LogModule } from './modules/log/log.module';
 import { TestModule } from './test/test.module';
+import { UserModule } from './modules/user/user.module';
+import { NotificationModule } from './notification/notification.module';
 
 @Module({
   imports: [
@@ -18,6 +20,8 @@ import { TestModule } from './test/test.module';
     ProviderModule,
     LogModule,
     TestModule,
+    UserModule,
+    NotificationModule,
   ],
   controllers: [],
   providers: [],

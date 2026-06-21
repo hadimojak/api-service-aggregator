@@ -5,6 +5,7 @@ import { ConfigService } from '../../config/config.service';
 import { ProviderEntity } from '../provider/entities/provider.entity';
 import { TenantEntity } from '../tenant/entities/tenant.entity';
 import { RequestLogEntity } from '../log/entities/request-log.entity';
+import { UserEntity } from '../user/entities/user.entity';
 
 @Module({
   providers: [DatabaseService],
@@ -17,7 +18,7 @@ import { RequestLogEntity } from '../log/entities/request-log.entity';
         username: ConfigService.config.postgress.POSTGRES_USER,
         password: ConfigService.config.postgress.POSTGRES_PASSWORD,
         database: ConfigService.config.postgress.POSTGRES_DB,
-        entities: [ProviderEntity, TenantEntity, RequestLogEntity],
+        entities: [ProviderEntity, TenantEntity, RequestLogEntity, UserEntity],
         synchronize: false,
         logging: false,
         retryAttempts: 10,

@@ -57,14 +57,13 @@ npm run mig:run:one --name=name
 
 
 
+
 ```
 api-service-aggregator
 ├─ .env.example
 ├─ .prettierrc
 ├─ docker-compose.yml
 ├─ eslint.config.mjs
-├─ mailhog
-│  └─ auth
 ├─ nest-cli.json
 ├─ package-lock.json
 ├─ package.json
@@ -75,15 +74,20 @@ api-service-aggregator
 │  │  ├─ decorators
 │  │  │  └─ temp.ts
 │  │  ├─ dto
-│  │  │  ├─ create-provider.dto.ts
-│  │  │  ├─ create-request-log.dto.ts
-│  │  │  └─ create-result.dto.ts
+│  │  │  ├─ provider-create.dto.ts
+│  │  │  ├─ provider-filtere.dto.ts
+│  │  │  ├─ request-create-log.dto.ts
+│  │  │  ├─ result-modify.dto.ts
+│  │  │  ├─ tenant-create.dto.ts
+│  │  │  └─ tenant-filter.dto.ts
 │  │  ├─ guards
 │  │  │  └─ tenant.auth.guard.ts
 │  │  ├─ helpers
 │  │  │  └─ temp.ts
-│  │  └─ interceptors
-│  │     └─ temp.ts
+│  │  ├─ interceptors
+│  │  │  └─ temp.ts
+│  │  └─ types
+│  │     └─ peginate-result.type.ts
 │  ├─ config
 │  │  ├─ config.constant.ts
 │  │  ├─ config.module.ts
@@ -124,6 +128,7 @@ api-service-aggregator
 │  │  └─ tenant
 │  │     ├─ entities
 │  │     │  └─ tenant.entity.ts
+│  │     ├─ tenant.controller.ts
 │  │     ├─ tenant.module.ts
 │  │     └─ tenant.service.ts
 │  └─ test

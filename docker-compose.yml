@@ -41,8 +41,52 @@ services:
       timeout: 5s
       retries: 5
 
+  kong-migrations:
+    image: kong/kong-gateway:3.14
+    container_name: kong-migrations
+    restart: "no"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      KONG_DATABASE: postgres
+      KONG_PG_HOST: postgres
+      KONG_PG_PORT: ${POSTGRES_PORT}
+      KONG_PG_DATABASE: ${POSTGRES_KONG_DB}
+      KONG_PG_USER: ${POSTGRES_USER}
+      KONG_PG_PASSWORD: ${POSTGRES_PASSWORD}
+    command: kong migrations bootstrap
+
+  kong:
+    image: kong/kong-gateway:3.14
+    container_name: kong
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      KONG_DATABASE: postgres
+
+      # IMPORTANT: internal docker network, NOT your .env values
+      KONG_PG_HOST: postgres
+      KONG_PG_PORT: ${POSTGRES_PORT}
+      KONG_PG_DATABASE: ${POSTGRES_KONG_DB}
+      KONG_PG_USER: ${POSTGRES_USER}
+      KONG_PG_PASSWORD: ${POSTGRES_PASSWORD}
+
+      KONG_PROXY_LISTEN: 0.0.0.0:7000
+      KONG_ADMIN_LISTEN: 0.0.0.0:7001
+
+      KONG_PROXY_ACCESS_LOG: /dev/stdout
+      KONG_ADMIN_ACCESS_LOG: /dev/stdout
+      KONG_PROXY_ERROR_LOG: /dev/stderr
+      KONG_ADMIN_ERROR_LOG: /dev/stderr
+
+    ports:
+      - "7000:7000"
+      - "7001:7001"
+
 volumes:
   redis_data:
   rabbitmq_data:
   postgres_data:
-

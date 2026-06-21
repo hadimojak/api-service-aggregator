@@ -4,6 +4,7 @@ import { ConfigService } from '../../config/config.service';
 import { TenantEntity } from '../tenant/entities/tenant.entity';
 import { ProviderEntity } from '../provider/entities/provider.entity';
 import { RequestLogEntity } from '../log/entities/request-log.entity';
+import { UserEntity } from '../user/entities/user.entity';
 
 export default new DataSource({
   type: 'postgres',
@@ -16,12 +17,14 @@ export default new DataSource({
     TenantEntity,
     ProviderEntity,
     RequestLogEntity,
+    UserEntity,
     // Add entities here
   ],
 
   migrations: ['src/modules/database/migrations/*.ts'],
 
-  synchronize: false,
+  //only for development
+  synchronize: true,
 
   logging: false,
 });
