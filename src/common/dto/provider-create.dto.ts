@@ -59,4 +59,6 @@ export class CreateProviderDto {
   @Min(100)
   @Transform(({ value }) => Number(value))
   timeout?: number;
+
+  
 }

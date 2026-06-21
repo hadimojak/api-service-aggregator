@@ -23,8 +23,9 @@ import {
   PartialType,
 } from '@nestjs/swagger';
 import { TenantEntity } from './entities/tenant.entity';
-import { ModifyResultDto } from '../../common/dto/create-result.dto';
-import { CreateTenantDto } from '../../common/dto/create-tenant.dto';
+import { ModifyResultDto } from '../../common/dto/result-modify.dto';
+import { CreateTenantDto } from '../../common/dto/tenant-create.dto';
+import { TenantFilterDto } from '../../common/dto/tenant-filter.dto';
 
 
 @Controller('user/tenant')
@@ -35,7 +36,7 @@ export class TenantController {
   @Get()
   @ApiOperation({ summary: 'List providers (filterable)' })
   @ApiOkResponse({ type: TenantEntity, isArray: true })
-  async providersInquiry(@Query() query: Partial<CreateTenantDto>) {
+  async providersInquiry(@Query() query: TenantFilterDto) {
     return this.tenantService.find(query);
   }
 

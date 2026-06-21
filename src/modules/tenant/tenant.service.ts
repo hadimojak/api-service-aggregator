@@ -13,8 +13,10 @@ import {
   Repository,
 } from 'typeorm';
 import { TenantEntity } from './entities/tenant.entity';
-import { ModifyResultDto } from '../../common/dto/create-result.dto';
-import { CreateTenantDto } from '../../common/dto/create-tenant.dto';
+import { ModifyResultDto } from '../../common/dto/result-modify.dto';
+import { CreateTenantDto } from '../../common/dto/tenant-create.dto';
+import { TenantFilterDto } from '../../common/dto/tenant-filter.dto';
+import { PaginatedResult } from '../../common/types/peginate-result.type';
 
 @Injectable()
 export class TenantService {
@@ -23,28 +25,32 @@ export class TenantService {
     private readonly tenantRepo: Repository<TenantEntity>,
   ) {}
 
-  async find(query: Partial<CreateTenantDto>): Promise<TenantEntity[]> {
+  async find(query: TenantFilterDto): Promise<PaginatedResult<TenantEntity>> {
     const where: any = {};
 
-    if (query.apiKey) {
-      where.apiKey = ILike(`%${query.apiKey}%`);
-    }
-
-    if (query.name) {
-      where.name = ILike(`%${query.name}%`);
-    }
-
-    if (query.isActive !== undefined) {
-      where.isActive = query.isActive;
-    }
-
-    if (query.rateLimitPerMin !== undefined && query.rateLimitPerMin !== null) {
+    if (query.apiKey) where.apiKey = ILike(`%${query.apiKey}%`);
+    if (query.name) where.name = ILike(`%${query.name}%`);
+    if (query.isActive !== undefined) where.isActive = query.isActive;
+    if (query.rateLimitPerMin !== undefined && query.rateLimitPerMin !== null)
       where.rateLimitPerMin = LessThanOrEqual(Number(query.rateLimitPerMin));
-    }
 
-    return this.tenantRepo.find({
+    const page = query.page ?? 1;
+    const limit = query.limit ?? 5;
+
+    const [data, total] = await this.tenantRepo.findAndCount({
       where,
+      skip: (page - 1) * limit,
+      take: limit,
+      order: { createdAt: 'DESC' },
     });
+
+    return {
+      data,
+      total,
+      page,
+      limit,
+      totalPages: Math.ceil(total / limit),
+    };
   }
 
   async findById(id: string): Promise<TenantEntity> {

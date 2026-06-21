@@ -12,7 +12,7 @@ import {
   Query,
 } from '@nestjs/common';
 import { ProviderService } from './provider.service';
-import { CreateProviderDto } from '../../common/dto/create-provider.dto';
+import { CreateProviderDto } from '../../common/dto/provider-create.dto';
 import {
   ApiBadRequestResponse,
   ApiCreatedResponse,
@@ -20,15 +20,12 @@ import {
   ApiOperation,
   ApiParam,
   ApiTags,
-  OmitType,
-  PartialType,
 } from '@nestjs/swagger';
 import { ProviderEntity } from './entities/provider.entity';
-import { ModifyResultDto } from '../../common/dto/create-result.dto';
+import { ModifyResultDto } from '../../common/dto/result-modify.dto';
+import { ProviderFilterDto } from '../../common/dto/provider-filtere.dto';
 
-export class ProviderFilterDto extends PartialType(
-  OmitType(CreateProviderDto, ['priority'] as const),
-) {}
+
 
 @Controller('admin/provider')
 @ApiTags('provider')

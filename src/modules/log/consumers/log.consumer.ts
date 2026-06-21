@@ -1,7 +1,7 @@
 import { Controller, Logger } from '@nestjs/common';
 import { Ctx, EventPattern, Payload, RmqContext } from '@nestjs/microservices';
 import { LogService } from '../log.service';
-import type { CreateRequestLogDto } from '../../../common/dto/create-request-log.dto';
+import type { CreateRequestLogDto } from '../../../common/dto/request-create-log.dto';
 
 @Controller()
 export class LogConsumer {

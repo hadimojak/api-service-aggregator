@@ -13,9 +13,10 @@ import {
   Repository,
 } from 'typeorm';
 import { ProviderEntity } from './entities/provider.entity';
-import { CreateProviderDto } from '../../common/dto/create-provider.dto';
-import { ModifyResultDto } from '../../common/dto/create-result.dto';
-import { ProviderFilterDto } from './provider.controller';
+import { CreateProviderDto } from '../../common/dto/provider-create.dto';
+import { ModifyResultDto } from '../../common/dto/result-modify.dto';
+import { ProviderFilterDto } from '../../common/dto/provider-filtere.dto';
+import { PaginatedResult } from '../../common/types/peginate-result.type';
 
 @Injectable()
 export class ProviderService {
@@ -24,37 +25,36 @@ export class ProviderService {
     private readonly providerRepo: Repository<ProviderEntity>,
   ) {}
 
-  async find(query: ProviderFilterDto): Promise<ProviderEntity[]> {
+  async find(
+    query: ProviderFilterDto,
+  ): Promise<PaginatedResult<ProviderEntity>> {
     const where: any = {};
 
-    if (query.code) {
-      where.code = ILike(`%${query.code}%`);
-    }
-
-    if (query.type) {
-      where.type = ILike(`%${query.type}%`);
-    }
-
-    if (query.baseUrl) {
-      where.baseUrl = ILike(`%${query.baseUrl}%`);
-    }
-
-    if (query.apiKey) {
-      where.apiKey = ILike(`%${query.apiKey}%`);
-    }
-
-    if (query.isActive !== undefined) {
-      where.isActive = query.isActive;
-    }
-
-    if (query.timeout !== undefined && query.timeout !== null) {
+    if (query.code) where.code = ILike(`%${query.code}%`);
+    if (query.type) where.type = ILike(`%${query.type}%`);
+    if (query.baseUrl) where.baseUrl = ILike(`%${query.baseUrl}%`);
+    if (query.apiKey) where.apiKey = ILike(`%${query.apiKey}%`);
+    if (query.isActive !== undefined) where.isActive = query.isActive;
+    if (query.timeout !== undefined && query.timeout !== null)
       where.timeout = LessThanOrEqual(Number(query.timeout));
-    }
 
-    return await this.providerRepo.find({
+    const page = query.page || 1;
+    const limit = query.limit || 5;
+
+    const [data, total] = await this.providerRepo.findAndCount({
       where,
-      order: { priority: 'ASC' },
+      order: { baseUrl: 'ASC' },
+      skip: (page - 1) * limit,
+      take: limit,
     });
+
+    return {
+      data,
+      total,
+      page,
+      limit,
+      totalPages: Math.ceil(total / limit),
+    };
   }
 
   async findById(id: string): Promise<ProviderEntity> {
