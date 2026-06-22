@@ -5,8 +5,11 @@ import {
   Entity,
   PrimaryGeneratedColumn,
   OneToOne,
+  OneToMany,
 } from 'typeorm';
 import { UserEntity } from '../../user/entities/user.entity';
+import { NotificationEntity } from '../../notification/entities/entity';
+import { RequestLogEntity } from '../../log/entities/request-log.entity';
 
 @Entity('tenant')
 export class TenantEntity {
@@ -46,4 +49,10 @@ export class TenantEntity {
 
   @OneToOne(() => UserEntity, (user) => user.tenant, { nullable: true })
   user?: UserEntity;
+
+  @OneToMany(() => NotificationEntity, (notification) => notification.tenant)
+  notifications!: NotificationEntity[];
+
+  @OneToMany(() => RequestLogEntity, (requestLog) => requestLog.tenant)
+  requestLogs!: RequestLogEntity[];
 }

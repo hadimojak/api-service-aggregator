@@ -9,6 +9,7 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { TenantEntity } from '../../tenant/entities/tenant.entity';
+import { WalletEntity } from '../../wallet/entities/entity';
 
 export enum UserRole {
   ADMIN = 'admin',
@@ -49,6 +50,11 @@ export class UserEntity {
   })
   @JoinColumn()
   tenant?: TenantEntity | null;
+
+  @OneToOne(() => WalletEntity, (wallet) => wallet.user, {
+    nullable: true,
+  })
+  wallet?: WalletEntity;
 
   @CreateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   createdAt!: Date;

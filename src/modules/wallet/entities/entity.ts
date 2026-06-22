@@ -4,45 +4,44 @@ import {
   DeleteDateColumn,
   Entity,
   PrimaryGeneratedColumn,
-  OneToMany,
+  OneToOne,
+  JoinColumn,
 } from 'typeorm';
-import { ApiEntity } from '../../api/entities/api.entity';
+import { UserEntity } from '../../user/entities/user.entity';
 
-@Entity('provider')
-export class ProviderEntity {
+@Entity('wallet')
+export class WalletEntity {
   @PrimaryGeneratedColumn('uuid')
   id!: string;
 
   @Column({
-    length: 255,
-    unique: true,
+    type: 'decimal',
+    precision: 15,
+    scale: 2,
+    default: 0,
   })
-  code!: string;
+  balance!: number;
 
-  @Column()
-  type!: string;
-
-  @Column({ unique: true })
-  baseUrl!: string;
-
-  @Column()
-  apiKey!: string;
-
-  @Column({ default: 1 })
-  priority!: number;
+  @Column({
+    length: 3,
+    default: 'USD',
+  })
+  currency!: string;
 
   @Column({
     default: true,
   })
   isActive!: boolean;
 
-  @Column({
-    default: 10000,
+  @OneToOne(() => UserEntity, (user) => user.wallet, {
+    nullable: false,
+    eager: false,
   })
-  timeout!: number;
+  @JoinColumn({ name: 'userId' })
+  user!: UserEntity;
 
-  @OneToMany(() => ApiEntity, (api) => api.provider)
-  apis!: ApiEntity[];
+  @Column()
+  userId!: string;
 
   @CreateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   createdAt!: Date;

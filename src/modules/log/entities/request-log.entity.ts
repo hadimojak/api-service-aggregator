@@ -3,12 +3,22 @@ import {
   CreateDateColumn,
   Entity,
   PrimaryGeneratedColumn,
+  ManyToOne,
+  JoinColumn,
 } from 'typeorm';
+import { TenantEntity } from '../../tenant/entities/tenant.entity';
 
 @Entity('request_log')
 export class RequestLogEntity {
   @PrimaryGeneratedColumn('uuid')
   id!: string;
+
+  @ManyToOne(() => TenantEntity, (tenant) => tenant.requestLogs, {
+    nullable: false,
+    eager: false,
+  })
+  @JoinColumn({ name: 'tenantId' })
+  tenant!: TenantEntity;
 
   @Column()
   tenantId!: string;

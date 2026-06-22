@@ -5,6 +5,9 @@ import { TenantEntity } from '../tenant/entities/tenant.entity';
 import { ProviderEntity } from '../provider/entities/provider.entity';
 import { RequestLogEntity } from '../log/entities/request-log.entity';
 import { UserEntity } from '../user/entities/user.entity';
+import { ApiEntity } from '../api/entities/api.entity';
+import { NotificationEntity } from '../notification/entities/entity';
+import { WalletEntity } from '../wallet/entities/entity';
 
 export default new DataSource({
   type: 'postgres',
@@ -18,6 +21,9 @@ export default new DataSource({
     ProviderEntity,
     RequestLogEntity,
     UserEntity,
+    ApiEntity,
+    NotificationEntity,
+    WalletEntity,
     // Add entities here
   ],
 

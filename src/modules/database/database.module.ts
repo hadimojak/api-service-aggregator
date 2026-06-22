@@ -6,6 +6,9 @@ import { ProviderEntity } from '../provider/entities/provider.entity';
 import { TenantEntity } from '../tenant/entities/tenant.entity';
 import { RequestLogEntity } from '../log/entities/request-log.entity';
 import { UserEntity } from '../user/entities/user.entity';
+import { ApiEntity } from '../api/entities/api.entity';
+import { NotificationEntity } from '../notification/entities/entity';
+import { WalletEntity } from '../wallet/entities/entity';
 
 @Module({
   providers: [DatabaseService],
@@ -18,8 +21,16 @@ import { UserEntity } from '../user/entities/user.entity';
         username: ConfigService.config.postgress.POSTGRES_USER,
         password: ConfigService.config.postgress.POSTGRES_PASSWORD,
         database: ConfigService.config.postgress.POSTGRES_DB,
-        entities: [ProviderEntity, TenantEntity, RequestLogEntity, UserEntity],
-        synchronize: false,
+        entities: [
+          ProviderEntity,
+          TenantEntity,
+          RequestLogEntity,
+          UserEntity,
+          ApiEntity,
+          NotificationEntity,
+          WalletEntity,
+        ],
+        synchronize: true,
         logging: false,
         retryAttempts: 10,
         retryDelay: 3000,
