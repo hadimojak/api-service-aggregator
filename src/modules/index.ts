@@ -9,9 +9,10 @@ import { TenantModule } from './tenant/tenant.module';
 import { UserModule } from './user/user.module';
 import { WalletModule } from './wallet/wallet.module';
 import { ConfigModule } from '../config/config.module';
-
+import { AuthModule } from './auth/auth.module';
 
 export default {
+  AuthModule,
   ConfigModule,
   RedisModule,
   RabbitmqModule,

@@ -36,26 +36,26 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
-      test: ['CMD-SHELL', 'pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}']
+      test: [ 'CMD-SHELL', 'pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}' ]
       interval: 10s
       timeout: 5s
       retries: 5
 
-  kong-migrations:
-    image: kong/kong-gateway:3.14
-    container_name: kong-migrations
+  create-kong-db:
+    image: postgres:16-alpine
+    container_name: create-kong-db
     restart: "no"
     depends_on:
       postgres:
         condition: service_healthy
     environment:
-      KONG_DATABASE: postgres
-      KONG_PG_HOST: postgres
-      KONG_PG_PORT: ${POSTGRES_PORT}
-      KONG_PG_DATABASE: ${POSTGRES_KONG_DB}
-      KONG_PG_USER: ${POSTGRES_USER}
-      KONG_PG_PASSWORD: ${POSTGRES_PASSWORD}
-    command: kong migrations bootstrap
+      PGPASSWORD: ${POSTGRES_PASSWORD}
+    command:
+      - sh
+      - -c
+      - |
+        psql -h postgres -U ${POSTGRES_USER} -d ${POSTGRES_DB} -tc "SELECT 1 FROM pg_database WHERE datname = '${POSTGRES_KONG_DB}'" | grep -q 1 || \
+        psql -h postgres -U ${POSTGRES_USER} -d ${POSTGRES_DB} -c "CREATE DATABASE ${POSTGRES_KONG_DB};"
 
   kong:
     image: kong/kong-gateway:3.14
@@ -65,17 +65,17 @@ services:
       postgres:
         condition: service_healthy
     environment:
-      KONG_DATABASE: postgres
+      KONG_DATABASE: ${KONG_DB_DIALECT}
 
       # IMPORTANT: internal docker network, NOT your .env values
-      KONG_PG_HOST: postgres
+      KONG_PG_HOST: ${KONG_PG_HOST}
       KONG_PG_PORT: ${POSTGRES_PORT}
       KONG_PG_DATABASE: ${POSTGRES_KONG_DB}
       KONG_PG_USER: ${POSTGRES_USER}
       KONG_PG_PASSWORD: ${POSTGRES_PASSWORD}
 
-      KONG_PROXY_LISTEN: 0.0.0.0:7000
-      KONG_ADMIN_LISTEN: 0.0.0.0:7001
+      KONG_PROXY_LISTEN: ${KONG_PROXY_LISTEN}
+      KONG_ADMIN_LISTEN: ${KONG_ADMIN_LISTEN}
 
       KONG_PROXY_ACCESS_LOG: /dev/stdout
       KONG_ADMIN_ACCESS_LOG: /dev/stdout
@@ -83,8 +83,8 @@ services:
       KONG_ADMIN_ERROR_LOG: /dev/stderr
 
     ports:
-      - "7000:7000"
-      - "7001:7001"
+      - "${KONG_PROXY_PORT}:8000"
+      - "${KONG_ADMIN_PORT}:8001"
 
 volumes:
   redis_data:
