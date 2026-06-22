@@ -20,4 +20,30 @@ import {
 } from './dto/index';
 
 @Injectable()
-export class AuthService {}
+export class AuthService {
+  constructor(
+    @InjectRepository(UserEntity)
+    private readonly userRepo: Repository<UserEntity>,
+    @InjectRepository(TenantEntity)
+    private readonly tenantRepo: Repository<TenantEntity>,
+    @InjectRepository(WalletEntity)
+    private readonly walletRepo: Repository<WalletEntity>,
+    private readonly jwtService: JwtService,
+  ) {}
+
+  async signup() {}
+
+  async login() {}
+
+  async logout() {}
+
+  async refreshTokens() {}
+
+  async validateUser() {}
+
+  private async updateRefreshToken() {}
+
+  private async generateTokens() {}
+  
+  async generateApiKey() {}
+}
