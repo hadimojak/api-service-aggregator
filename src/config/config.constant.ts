@@ -54,6 +54,13 @@ export const config = {
     POSTGRES_USER: validatedEnv.POSTGRES_USER,
     POSTGRES_PASSWORD: validatedEnv.POSTGRES_PASSWORD,
   },
+  jwt: {
+    JWT_SECRET: validatedEnv.JWT_SECRET,
+    JWT_REFRESH_SECRET: validatedEnv.JWT_REFRESH_SECRET,
+    JWT_EXPIRES_IN: validatedEnv.JWT_EXPIRES_IN,
+    JWT_REFRESH_EXPIRES_IN: validatedEnv.JWT_REFRESH_EXPIRES_IN,
+  },
+  api: { API_PREFIX: validatedEnv.API_PREFIX },
 } as const;
 
 export type AppConfig = typeof config;

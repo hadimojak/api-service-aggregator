@@ -6,9 +6,10 @@ import {
   PrimaryGeneratedColumn,
   OneToOne,
   OneToMany,
+  JoinColumn,
 } from 'typeorm';
 import { UserEntity } from '../../user/entities/user.entity';
-import { NotificationEntity } from '../../notification/entities/entity';
+import { NotificationEntity } from '../../notification/entities/notification.entity';
 import { RequestLogEntity } from '../../log/entities/request-log.entity';
 
 @Entity('tenant')
@@ -48,7 +49,11 @@ export class TenantEntity {
   deletedAt!: Date;
 
   @OneToOne(() => UserEntity, (user) => user.tenant, { nullable: true })
+  @JoinColumn({ name: 'userId' })
   user?: UserEntity;
+
+  @Column()
+  userId!: string;
 
   @OneToMany(() => NotificationEntity, (notification) => notification.tenant)
   notifications!: NotificationEntity[];

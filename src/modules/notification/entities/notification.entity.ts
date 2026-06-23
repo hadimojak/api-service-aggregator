@@ -43,16 +43,6 @@ export class NotificationEntity {
   })
   isRead!: boolean;
 
-  @ManyToOne(() => TenantEntity, (tenant) => tenant.notifications, {
-    nullable: false,
-    eager: false,
-  })
-  @JoinColumn({ name: 'tenantId' })
-  tenant!: TenantEntity;
-
-  @Column()
-  tenantId!: string;
-
   @CreateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   createdAt!: Date;
 
@@ -65,4 +55,14 @@ export class NotificationEntity {
 
   @DeleteDateColumn({ nullable: true })
   deletedAt!: Date;
+
+  @ManyToOne(() => TenantEntity, (tenant) => tenant.notifications, {
+    nullable: false,
+    eager: false,
+  })
+  @JoinColumn({ name: 'tenantId' })
+  tenant!: TenantEntity;
+
+  @Column()
+  tenantId!: string;
 }

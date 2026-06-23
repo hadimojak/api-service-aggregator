@@ -6,7 +6,7 @@ import Redis from 'ioredis';
 export class RedisService extends Redis implements OnModuleDestroy {
   private readonly logger = new Logger(RedisService.name);
 
-  constructor(private readonly configService: ConfigService) {
+  constructor() {
     super({
       host: ConfigService.config.redis.host,
       port: ConfigService.config.redis.port,

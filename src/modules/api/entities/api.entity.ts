@@ -42,16 +42,6 @@ export class ApiEntity {
   })
   isActive!: boolean;
 
-  @ManyToOne(() => ProviderEntity, (provider) => provider.apis, {
-    nullable: false,
-    eager: false,
-  })
-  @JoinColumn({ name: 'providerId' })
-  provider!: ProviderEntity;
-
-  @Column()
-  providerId!: string;
-
   @CreateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   createdAt!: Date;
 
@@ -64,4 +54,14 @@ export class ApiEntity {
 
   @DeleteDateColumn({ nullable: true })
   deletedAt!: Date;
+
+  @ManyToOne(() => ProviderEntity, (provider) => provider.apis, {
+    nullable: false,
+    eager: false,
+  })
+  @JoinColumn({ name: 'providerId' })
+  provider!: ProviderEntity;
+
+  @Column()
+  providerId!: string;
 }

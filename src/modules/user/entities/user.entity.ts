@@ -1,4 +1,3 @@
-// src/modules/user/entities/user.entity.ts
 import {
   Column,
   CreateDateColumn,
@@ -9,7 +8,7 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { TenantEntity } from '../../tenant/entities/tenant.entity';
-import { WalletEntity } from '../../wallet/entities/entity';
+import { WalletEntity } from '../../wallet/entities/wallet.entity';
 
 export enum UserRole {
   ADMIN = 'admin',
@@ -43,19 +42,6 @@ export class UserEntity {
   @Column({ type: 'varchar', length: 255, nullable: true, default: null })
   refreshTokenHash!: string | null;
 
-  // nullable: admin users may not have a tenant
-  @OneToOne(() => TenantEntity, (tenant) => tenant.user, {
-    nullable: true,
-    eager: false,
-  })
-  @JoinColumn()
-  tenant?: TenantEntity | null;
-
-  @OneToOne(() => WalletEntity, (wallet) => wallet.user, {
-    nullable: true,
-  })
-  wallet?: WalletEntity;
-
   @CreateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   createdAt!: Date;
 
@@ -64,4 +50,23 @@ export class UserEntity {
 
   @DeleteDateColumn({ nullable: true })
   deletedAt!: Date;
+
+  @OneToOne(() => TenantEntity, (tenant) => tenant.user, {
+    nullable: true,
+    eager: false,
+  })
+  @JoinColumn({ name: 'tenantId' })
+  tenant?: TenantEntity | null;
+
+  @Column()
+  tenantId!: string;
+
+  @OneToOne(() => WalletEntity, (wallet) => wallet.user, {
+    nullable: true,
+  })
+  @JoinColumn({ name: 'walletId' })
+  wallet?: WalletEntity;
+
+  @Column()
+  walletId!: string;
 }

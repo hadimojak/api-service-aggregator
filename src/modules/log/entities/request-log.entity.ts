@@ -13,16 +13,6 @@ export class RequestLogEntity {
   @PrimaryGeneratedColumn('uuid')
   id!: string;
 
-  @ManyToOne(() => TenantEntity, (tenant) => tenant.requestLogs, {
-    nullable: false,
-    eager: false,
-  })
-  @JoinColumn({ name: 'tenantId' })
-  tenant!: TenantEntity;
-
-  @Column()
-  tenantId!: string;
-
   @Column()
   providerName!: string;
 
@@ -48,4 +38,14 @@ export class RequestLogEntity {
 
   @CreateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   createdAt!: Date;
+
+  @ManyToOne(() => TenantEntity, (tenant) => tenant.requestLogs, {
+    nullable: false,
+    eager: false,
+  })
+  @JoinColumn({ name: 'tenantId' })
+  tenant!: TenantEntity;
+
+  @Column()
+  tenantId!: string;
 }

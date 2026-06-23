@@ -25,8 +25,6 @@ import { ProviderEntity } from './entities/provider.entity';
 import { ModifyResultDto } from '../../common/dto/result-modify.dto';
 import { ProviderFilterDto } from '../../common/dto/provider-filtere.dto';
 
-
-
 @Controller('admin/provider')
 @ApiTags('provider')
 export class ProviderController {

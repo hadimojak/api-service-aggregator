@@ -6,8 +6,8 @@ import { ProviderEntity } from '../provider/entities/provider.entity';
 import { RequestLogEntity } from '../log/entities/request-log.entity';
 import { UserEntity } from '../user/entities/user.entity';
 import { ApiEntity } from '../api/entities/api.entity';
-import { NotificationEntity } from '../notification/entities/entity';
-import { WalletEntity } from '../wallet/entities/entity';
+import { NotificationEntity } from '../notification/entities/notification.entity';
+import { WalletEntity } from '../wallet/entities/wallet.entity';
 
 export default new DataSource({
   type: 'postgres',

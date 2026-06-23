@@ -7,8 +7,8 @@ import { TenantEntity } from '../tenant/entities/tenant.entity';
 import { RequestLogEntity } from '../log/entities/request-log.entity';
 import { UserEntity } from '../user/entities/user.entity';
 import { ApiEntity } from '../api/entities/api.entity';
-import { NotificationEntity } from '../notification/entities/entity';
-import { WalletEntity } from '../wallet/entities/entity';
+import { NotificationEntity } from '../notification/entities/notification.entity';
+import { WalletEntity } from '../wallet/entities/wallet.entity';
 
 @Module({
   providers: [DatabaseService],

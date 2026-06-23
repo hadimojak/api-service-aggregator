@@ -41,9 +41,6 @@ export class ProviderEntity {
   })
   timeout!: number;
 
-  @OneToMany(() => ApiEntity, (api) => api.provider)
-  apis!: ApiEntity[];
-
   @CreateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   createdAt!: Date;
 
@@ -56,4 +53,7 @@ export class ProviderEntity {
 
   @DeleteDateColumn({ nullable: true })
   deletedAt!: Date;
+
+  @OneToMany(() => ApiEntity, (api) => api.provider)
+  apis!: ApiEntity[];
 }

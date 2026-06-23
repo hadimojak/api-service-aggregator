@@ -33,16 +33,6 @@ export class WalletEntity {
   })
   isActive!: boolean;
 
-  @OneToOne(() => UserEntity, (user) => user.wallet, {
-    nullable: false,
-    eager: false,
-  })
-  @JoinColumn({ name: 'userId' })
-  user!: UserEntity;
-
-  @Column()
-  userId!: string;
-
   @CreateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   createdAt!: Date;
 
@@ -55,4 +45,14 @@ export class WalletEntity {
 
   @DeleteDateColumn({ nullable: true })
   deletedAt!: Date;
+
+  @OneToOne(() => UserEntity, (user) => user.wallet, {
+    nullable: false,
+    eager: false,
+  })
+  @JoinColumn({ name: 'userId' })
+  user!: UserEntity;
+
+  @Column()
+  userId!: string;
 }
