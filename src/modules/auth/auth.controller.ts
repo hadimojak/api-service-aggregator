@@ -22,7 +22,7 @@ export class AuthController {
     return this.authService.signup(signupDto);
   }
 
-  @Post('loging')
+  @Post('login')
   @HttpCode(HttpStatus.OK)
   async signin(@Body() loginDto: LoginDto): Promise<AuthResponseDto> {
     return this.authService.login(loginDto);

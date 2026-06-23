@@ -11,6 +11,7 @@ import {
 import { UserEntity } from '../../user/entities/user.entity';
 import { NotificationEntity } from '../../notification/entities/notification.entity';
 import { RequestLogEntity } from '../../log/entities/request-log.entity';
+import { ApiEntity } from '../../api/entities/api.entity';
 
 @Entity('tenant')
 export class TenantEntity {
@@ -60,4 +61,7 @@ export class TenantEntity {
 
   @OneToMany(() => RequestLogEntity, (requestLog) => requestLog.tenant)
   requestLogs!: RequestLogEntity[];
+
+  @OneToMany(() => ApiEntity, (api) => api.tenant)
+  apis!: ApiEntity[];
 }

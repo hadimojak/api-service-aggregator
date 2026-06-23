@@ -8,6 +8,7 @@ import {
   JoinColumn,
 } from 'typeorm';
 import { ProviderEntity } from '../../provider/entities/provider.entity';
+import { TenantEntity } from '../../tenant/entities/tenant.entity';
 
 @Entity('api')
 export class ApiEntity {
@@ -64,4 +65,14 @@ export class ApiEntity {
 
   @Column()
   providerId!: string;
+
+  @ManyToOne(() => TenantEntity, (tenant) => tenant.apis, {
+    nullable: false,
+    eager: false,
+  })
+  @JoinColumn({ name: 'tenantId' })
+  tenant!: TenantEntity;
+
+  @Column()
+  tenantId!: string;
 }

@@ -30,7 +30,7 @@ import { WalletEntity } from '../wallet/entities/wallet.entity';
           NotificationEntity,
           WalletEntity,
         ],
-        synchronize: true,
+        synchronize: false,
         logging: false,
         retryAttempts: 10,
         retryDelay: 3000,
