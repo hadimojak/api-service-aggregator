@@ -24,7 +24,7 @@ export class WalletEntity {
 
   @Column({
     length: 3,
-    default: 'USD',
+    default: 'IRR',
   })
   currency!: string;
 

@@ -98,7 +98,7 @@ export class AuthService {
 
       const wallet = this.walletRepo.create({
         balance: 0,
-        currency: 'TOOMAN',
+        currency: 'IRI',
         isActive: true,
         user,
         userId: user.id,

@@ -30,7 +30,7 @@ export default new DataSource({
   migrations: ['src/modules/database/migrations/*.ts'],
 
   //only for development
-  synchronize: false,
+  synchronize: true,
 
   logging: false,
 });

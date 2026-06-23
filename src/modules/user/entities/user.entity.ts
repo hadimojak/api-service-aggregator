@@ -58,7 +58,7 @@ export class UserEntity {
   @JoinColumn({ name: 'tenantId' })
   tenant?: TenantEntity | null;
 
-  @Column()
+  @Column({ nullable: true })
   tenantId!: string;
 
   @OneToOne(() => WalletEntity, (wallet) => wallet.user, {
@@ -67,6 +67,6 @@ export class UserEntity {
   @JoinColumn({ name: 'walletId' })
   wallet?: WalletEntity;
 
-  @Column()
+  @Column({ nullable: true })
   walletId!: string;
 }
