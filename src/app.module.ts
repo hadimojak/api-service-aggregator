@@ -1,6 +1,4 @@
 import { Module } from '@nestjs/common';
-import { TestModule } from './test/test.module';
-import { AuthModule } from './modules/auth/auth.module';
 import modules from './modules/index';
 
 @Module({
@@ -12,12 +10,11 @@ import modules from './modules/index';
     modules.DatabaseModule,
     modules.ProviderModule,
     modules.LogModule,
-    TestModule,
     modules.UserModule,
     modules.NotificationModule,
     modules.WalletModule,
     modules.ApiModule,
-    AuthModule,
+    modules.AuthModule,
   ],
   controllers: [],
   providers: [],
