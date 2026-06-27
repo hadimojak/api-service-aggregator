@@ -54,25 +54,19 @@ we should have three diffrent env file likes this :
 npm run mig:gen:dev --name=name
 npm run mig:run:one --name=name
 ## tree
-
-
-
-
 ```
 api-service-aggregator
 ├─ .env.example
 ├─ .prettierrc
+├─ db_shema.pgerd
 ├─ docker-compose.yml
 ├─ eslint.config.mjs
 ├─ nest-cli.json
-├─ package-lock.json
 ├─ package.json
 ├─ README.md
 ├─ src
 │  ├─ app.module.ts
 │  ├─ common
-│  │  ├─ decorators
-│  │  │  └─ temp.ts
 │  │  ├─ dto
 │  │  │  ├─ provider-create.dto.ts
 │  │  │  ├─ provider-filtere.dto.ts
@@ -82,10 +76,6 @@ api-service-aggregator
 │  │  │  └─ tenant-filter.dto.ts
 │  │  ├─ guards
 │  │  │  └─ tenant.auth.guard.ts
-│  │  ├─ helpers
-│  │  │  └─ temp.ts
-│  │  ├─ interceptors
-│  │  │  └─ temp.ts
 │  │  └─ types
 │  │     └─ peginate-result.type.ts
 │  ├─ config
@@ -97,6 +87,28 @@ api-service-aggregator
 │  │     └─ env.validation.interface.ts
 │  ├─ main.ts
 │  ├─ modules
+│  │  ├─ api
+│  │  │  ├─ api.controller.ts
+│  │  │  ├─ api.module.ts
+│  │  │  ├─ api.service.ts
+│  │  │  └─ entities
+│  │  │     └─ api.entity.ts
+│  │  ├─ auth
+│  │  │  ├─ auth.controller.ts
+│  │  │  ├─ auth.module.ts
+│  │  │  ├─ auth.service.ts
+│  │  │  ├─ dto
+│  │  │  │  ├─ auth-response.dto.ts
+│  │  │  │  ├─ index.ts
+│  │  │  │  ├─ login.dto.ts
+│  │  │  │  ├─ refresh-token.dto.ts
+│  │  │  │  └─ signup.dto.ts
+│  │  │  ├─ guards
+│  │  │  │  ├─ jwt-auth.guard.ts
+│  │  │  │  └─ roles.guard.ts
+│  │  │  └─ strategies
+│  │  │     ├─ jwt-refresh.strategy.ts
+│  │  │     └─ jwt.strategy.ts
 │  │  ├─ cache
 │  │  │  └─ redis
 │  │  │     ├─ redis.module.ts
@@ -104,8 +116,8 @@ api-service-aggregator
 │  │  ├─ database
 │  │  │  ├─ data-source.ts
 │  │  │  ├─ database.module.ts
-│  │  │  ├─ database.service.ts
-│  │  │  └─ migrations
+│  │  │  └─ database.service.ts
+│  │  ├─ index.ts
 │  │  ├─ log
 │  │  │  ├─ consumers
 │  │  │  │  └─ log.consumer.ts
@@ -113,6 +125,12 @@ api-service-aggregator
 │  │  │  │  └─ request-log.entity.ts
 │  │  │  ├─ log.module.ts
 │  │  │  └─ log.service.ts
+│  │  ├─ notification
+│  │  │  ├─ entities
+│  │  │  │  └─ notification.entity.ts
+│  │  │  ├─ notification.controller.ts
+│  │  │  ├─ notification.module.ts
+│  │  │  └─ notification.service.ts
 │  │  ├─ provider
 │  │  │  ├─ entities
 │  │  │  │  └─ provider.entity.ts
@@ -125,12 +143,24 @@ api-service-aggregator
 │  │  │  └─ rabbitmq
 │  │  │     ├─ rabbitmq.module.ts
 │  │  │     └─ rabbitmq.service.ts
-│  │  └─ tenant
+│  │  ├─ tenant
+│  │  │  ├─ entities
+│  │  │  │  └─ tenant.entity.ts
+│  │  │  ├─ tenant.controller.ts
+│  │  │  ├─ tenant.module.ts
+│  │  │  └─ tenant.service.ts
+│  │  ├─ user
+│  │  │  ├─ entities
+│  │  │  │  └─ user.entity.ts
+│  │  │  ├─ user.controller.ts
+│  │  │  ├─ user.module.ts
+│  │  │  └─ user.service.ts
+│  │  └─ wallet
 │  │     ├─ entities
-│  │     │  └─ tenant.entity.ts
-│  │     ├─ tenant.controller.ts
-│  │     ├─ tenant.module.ts
-│  │     └─ tenant.service.ts
+│  │     │  └─ wallet.entity.ts
+│  │     ├─ wallet.controller.ts
+│  │     ├─ wallet.module.ts
+│  │     └─ wallet.service.ts
 │  └─ test
 │     ├─ test.controller.spec.ts
 │     ├─ test.controller.ts
