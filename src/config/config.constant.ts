@@ -4,7 +4,7 @@ import * as path from 'path';
 import { ConfigValidationSchema } from './model/configuration.schema';
 
 // 1. Determine the environment
-const env = process.env.APP_ENV || 'dev';
+const env = process.env.NODE_ENV || 'dev';
 const filename = `.env.${env}`;
 const filePath = path.resolve(process.cwd(), filename);
 
